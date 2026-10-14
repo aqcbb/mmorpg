@@ -128,6 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\field\GameField.cpp" />
+    <ClCompile Include="src\field\GameFieldIterator.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +143,8 @@
     <ClInclude Include="include\factories\SpearmanFactory.h" />
     <ClInclude Include="include\factories\SwordsmanFactory.h" />
     <ClInclude Include="include\factories\UnitFactory.h" />
+    <ClInclude Include="include\field\GameField.h" />
+    <ClInclude Include="include\field\GameFieldIterator.h" />
     <ClInclude Include="include\units\Archer.h" />
     <ClInclude Include="include\units\Cavalry.h" />
     <ClInclude Include="include\units\Infantry.h" />
