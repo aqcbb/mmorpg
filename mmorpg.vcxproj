@@ -134,6 +134,13 @@
     <ClInclude Include="include\attributes\Armor.h" />
     <ClInclude Include="include\attributes\Attack.h" />
     <ClInclude Include="include\attributes\Health.h" />
+    <ClInclude Include="include\factories\CataphractFactory.h" />
+    <ClInclude Include="include\factories\HeavyArcherFactory.h" />
+    <ClInclude Include="include\factories\HorseArcherFactory.h" />
+    <ClInclude Include="include\factories\LightArcherFactory.h" />
+    <ClInclude Include="include\factories\SpearmanFactory.h" />
+    <ClInclude Include="include\factories\SwordsmanFactory.h" />
+    <ClInclude Include="include\factories\UnitFactory.h" />
     <ClInclude Include="include\units\Archer.h" />
     <ClInclude Include="include\units\Cavalry.h" />
     <ClInclude Include="include\units\Infantry.h" />
