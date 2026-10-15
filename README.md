@@ -1,6 +1,6 @@
 # MMORPG
 
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/aqcbb/mmorpg/releases)
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](https://github.com/aqcbb/mmorpg/releases)
 [![C++](https://img.shields.io/badge/C%2B%2B-14-blue.svg)]()
 
 Лабораторная работа по ООП: иерархия юнитов, паттерн «Фабричный метод», игровое поле с глубоким копированием, move-семантикой и собственным итератором.
