@@ -35,4 +35,9 @@ public:
 		armor.reduceDamage(finalDmg);
 		health.decrease(finalDmg);
 	}
+
+	void attackUnit(Unit& target) {
+		int dmg = attack.calculateDamage(target.armor);
+		target.health.decrease(dmg);
+	}
 };

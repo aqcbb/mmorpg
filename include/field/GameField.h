@@ -20,7 +20,7 @@ private:
 
 public:
 	GameField(int width, int height, int maxUnits);
-	~GameField() = default;
+	~GameField() {}
 
 	GameField(const GameField& other);
 	GameField& operator=(const GameField& other);
@@ -30,6 +30,7 @@ public:
 
 	bool addUnit(std::unique_ptr<Unit> unit, int x, int y);
 	bool removeUnit(int x, int y);
+	bool removeUnit(int index);
 	Unit* getUnit(int x, int y) const;
 	int size() const { return unitCount; }
 	bool empty() const { return unitCount == 0; }

@@ -112,6 +112,25 @@ bool GameField::removeUnit(int x, int y) {
 	return true;
 }
 
+bool GameField::removeUnit(int index) {
+	if (index < 0 || index >= unitCount) return false;
+
+	int count = 0;
+	for (int y = 1; y < height - 1; ++y) {
+		for (int x = 1; x < width; ++x) {
+			if (grid[y][x]) {
+				if (count == index) {
+					grid[y][x].reset();
+					--unitCount;
+					return true;
+				}
+				++count;
+			}
+		}
+	}
+	return false;
+}
+
 Unit* GameField::getUnit(int x, int y) const {
 	if (!inBounds(x, y)) return nullptr;
 	return grid[y][x].get();
