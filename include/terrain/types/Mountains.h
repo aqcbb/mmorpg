@@ -1,7 +1,7 @@
 #pragma once
 #include "terrain/Terrain.h"
 
-class Mountain : public Terrain {
+class Mountains : public Terrain {
 public:
 	bool isPassable(UnitType type) const override {
 		return type == UnitType::FlyingUnit;

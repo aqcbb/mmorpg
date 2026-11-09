@@ -31,7 +31,7 @@ std::shared_ptr<Unit> Base::createUnit(UnitType type, int x, int y) {
 	}
 
 	ConcreteUnitFactory factory(type);
-	auto unit = factory.createUnit();
+	auto unit = factory.createUnit(nextUnitId_++);
 	
 	std::shared_ptr<Unit> sharedUnit = std::move(unit);
 

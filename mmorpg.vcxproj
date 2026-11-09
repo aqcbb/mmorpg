@@ -128,9 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\base\Base.cpp" />
+    <ClCompile Include="src\core\UnitTypeInfo.cpp" />
+    <ClCompile Include="src\factories\ConcreteUnitFactory.cpp" />
     <ClCompile Include="src\field\GameField.cpp" />
     <ClCompile Include="src\field\GameFieldIterator.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\terrain\TerrainMap.cpp" />
+    <ClCompile Include="src\terrain\TerrainProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\attributes\Armor.h" />
@@ -140,6 +145,7 @@
     <ClInclude Include="include\core\Position.h" />
     <ClInclude Include="include\core\UnitType.h" />
     <ClInclude Include="include\factories\CataphractFactory.h" />
+    <ClInclude Include="include\factories\ConcreteUnitFactory.h" />
     <ClInclude Include="include\factories\HeavyArcherFactory.h" />
     <ClInclude Include="include\factories\HorseArcherFactory.h" />
     <ClInclude Include="include\factories\LightArcherFactory.h" />
@@ -154,11 +160,18 @@
     <ClInclude Include="include\observer\IObserver.h" />
     <ClInclude Include="include\observer\UnitEvent.h" />
     <ClInclude Include="include\terrain\Terrain.h" />
+    <ClInclude Include="include\terrain\TerrainMap.h" />
     <ClInclude Include="include\terrain\TerrainProxy.h" />
     <ClInclude Include="include\terrain\TerrainType.h" />
-    <ClInclude Include="include\units\Archer.h" />
+    <ClInclude Include="include\terrain\types\Forest.h" />
+    <ClInclude Include="include\terrain\types\Mountains.h" />
+    <ClInclude Include="include\terrain\types\Plains.h" />
+    <ClInclude Include="include\terrain\types\Swamp.h" />
+    <ClInclude Include="include\units\types\Archer.h" />
     <ClInclude Include="include\units\Cavalry.h" />
-    <ClInclude Include="include\units\Infantry.h" />
+    <ClInclude Include="include\units\types\FlyingUnit.h" />
+    <ClInclude Include="include\units\types\Infantry.h" />
+    <ClInclude Include="include\units\types\Mage.h" />
     <ClInclude Include="include\units\types\Cataphract.h" />
     <ClInclude Include="include\units\types\HeavyArcher.h" />
     <ClInclude Include="include\units\types\HorseArcher.h" />
