@@ -10,6 +10,16 @@
 #include <vector>
 
 class GameController {
+private:
+	std::shared_ptr<Base> base_;
+	std::shared_ptr<TerrainMap> terrain_;
+	GameField field_;
+
+	std::vector<std::vector<std::shared_ptr<NeutralObject>>> objects_;
+
+	Point basePosition_{ 1, 1 };
+
+	std::shared_ptr<Unit> findUnit(int id) const;
 public:
 	GameController(int width, int height);
 
@@ -25,13 +35,4 @@ public:
 	void runObserverDeathScenario();
 
 	void drawField() const;
-
-private:
-	std::shared_ptr<Base> base_;
-	std::shared_ptr<TerrainMap> terrain_;
-	GameField field_;
-
-	std::vector<std::vector<std::shared_ptr<NeutralObject>>> objects_;
-
-	std::shared_ptr<Unit> findUnit(int id) const;
 };

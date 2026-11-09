@@ -19,6 +19,8 @@ GameController::GameController(int width, int height)
 }
 
 void GameController::setup() {
+	basePosition_ = Point{ 1, 1 };
+	
 	terrain_->setTerrainAt(5, 5, std::make_shared<Forest>());
 	terrain_->setTerrainAt(6, 5, std::make_shared<Forest>());
 	terrain_->setTerrainAt(10, 11, std::make_shared<Mountains>());
@@ -31,6 +33,11 @@ void GameController::setup() {
 }
 
 void GameController::spawnUnit(UnitType type, int x, int y) {
+	if (x == basePosition_.x && y == basePosition_.y) {
+		std::cout << "[GameController] Cannot place unit on the base!\n";
+		return;
+	}
+
 	auto unit = base_->createUnit(type, x, y);
 	if (unit) {
 		field_.addUnit(unit, x, y);
@@ -96,6 +103,11 @@ void GameController::drawField() const {
 				continue;
 			}
 
+			if (x == basePosition_.x && y == basePosition_.y) {
+				std::cout << Color::WHITE << 'B' << Color::RESET;
+				continue;
+			}
+
 			auto unit = field_.getUnit(x, y);
 			if (unit) {
 				std::string type = unit->getType();
@@ -130,8 +142,8 @@ void GameController::drawField() const {
 
 void GameController::runCreationAndMovementScenario() {
 	std::cout << "\nScenario 1: Creation & Movement\n";
-	spawnUnit(UnitType::Infantry, 1, 1);
-	spawnUnit(UnitType::Archer, 2, 1);
+	spawnUnit(UnitType::Infantry, 5, 2);
+	spawnUnit(UnitType::Archer, 6, 7);
 	drawField();
 }
 
