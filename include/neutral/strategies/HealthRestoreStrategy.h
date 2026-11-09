@@ -1,7 +1,6 @@
 #pragma once
 #include "neutral/IInteractionStrategy.h"
 #include "units/Unit.h"
-#include "units/types/Infantry.h"
 #include <iostream>
 
 class HealthRestoreStrategy : public IInteractionStrategy {
