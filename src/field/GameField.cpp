@@ -31,7 +31,7 @@ GameField::GameField(const GameField& other)
 		grid[y].resize(width);
 		for (int x = 0; x < width; ++x) {
 			if (other.grid[y][x]) {
-				grid[y][x] = other.grid[y][x]->clone();
+				grid[y][x] = std::shared_ptr<Unit>(other.grid[y][x]->clone());
 				++unitCount;
 			}
 		}
@@ -52,7 +52,7 @@ GameField& GameField::operator=(const GameField& other) {
 		grid[y].resize(width);
 		for (int x = 0; x < width; ++x) {
 			if (other.grid[y][x]) {
-				grid[y][x] = other.grid[y][x]->clone();
+				grid[y][x] = std::shared_ptr<Unit>(other.grid[y][x]->clone());
 				++unitCount;
 			}
 		}
@@ -90,7 +90,7 @@ GameField& GameField::operator=(GameField&& other) noexcept {
 	return *this;
 }
 
-bool GameField::addUnit(std::unique_ptr<Unit> unit, int x, int y) {
+bool GameField::addUnit(std::shared_ptr<Unit> unit, int x, int y) {
 	if (!unit) return false;
 	if (!inBounds(x, y)) return false;
 	if (isBorder(x, y)) return false;
@@ -98,7 +98,7 @@ bool GameField::addUnit(std::unique_ptr<Unit> unit, int x, int y) {
 	if (unitCount >= maxUnits) return false;
 
 	unit->move(Point{x,y});
-	grid[y][x] = std::move(unit);
+	grid[y][x] = unit;
 	++unitCount;
 	return true;
 }
@@ -131,9 +131,9 @@ bool GameField::removeUnit(int index) {
 	return false;
 }
 
-Unit* GameField::getUnit(int x, int y) const {
+std::shared_ptr<Unit> GameField::getUnit(int x, int y) const {
 	if (!inBounds(x, y)) return nullptr;
-	return grid[y][x].get();
+	return grid[y][x];
 }
 
 void GameField::clear() {

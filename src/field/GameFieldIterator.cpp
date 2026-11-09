@@ -22,7 +22,7 @@ void GameField::Iterator::skipEmpty() {
 }
 
 Unit* GameField::Iterator::operator*() const {
-	return field->getUnit(x, y);
+	return field->getUnit(x, y).get();
 }
 
 GameField::Iterator& GameField::Iterator::operator++() {
