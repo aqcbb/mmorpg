@@ -7,12 +7,13 @@
 
 class Unit;
 
-class Base : public IObserver {
+class Base : public IObserver, public std::enable_shared_from_this<Base> {
 private:
 	int health_;
 	int maxUnits_;
 	int defenseLevel_;
 	int resources_;
+	int nextUnitId_;
 	std::vector<std::shared_ptr<Unit>> units_;
 public:
 	Base(int health, int maxUnits, int defenseLevel);
