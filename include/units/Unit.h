@@ -72,6 +72,8 @@ public:
 	int getId() const { return id_; }
 	Point getPosition() const { return position; }
 	char getSymbol() const { return symbol; }
+	int getHealth() const { return health.getValue(); }
+	int getAttack() const { return attack.getDamage(); }
 	bool isAlive() const { return !health.isZero(); }
 	std::shared_ptr<UnitTypeInfo> getInfo() const { return info_; }
 };

@@ -9,8 +9,12 @@ class NeutralObject {
 protected:
 	std::shared_ptr<IInteractionStrategy> strategy_;
 public:
-	explicit NeutralObject(std::shared_ptr<IInteractionStrategy> strategy);
+	explicit NeutralObject(std::shared_ptr<IInteractionStrategy> strategy) : strategy_(std::move(strategy)) {}
 	virtual ~NeutralObject() = default;
 
-	virtual void interact(Unit& unit) = 0;
+	virtual void interact(Unit& unit) {
+		if (strategy_) {
+			strategy_->apply(unit);
+		}
+	}
 };

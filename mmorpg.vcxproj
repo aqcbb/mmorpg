@@ -156,6 +156,16 @@
     <ClInclude Include="include\field\GameFieldIterator.h" />
     <ClInclude Include="include\neutral\IInteractionStrategy.h" />
     <ClInclude Include="include\neutral\NeutralObject.h" />
+    <ClInclude Include="include\neutral\objects\Altar.h" />
+    <ClInclude Include="include\neutral\objects\EnergySource.h" />
+    <ClInclude Include="include\neutral\objects\Trap.h" />
+    <ClInclude Include="include\neutral\objects\TreasureChest.h" />
+    <ClInclude Include="include\neutral\operators.h" />
+    <ClInclude Include="include\neutral\strategies\AttackBoostStrategy.h" />
+    <ClInclude Include="include\neutral\strategies\DamageStrategy.h" />
+    <ClInclude Include="include\neutral\strategies\HealthRestoreStrategy.h" />
+    <ClInclude Include="include\neutral\strategies\ManaBoostStrategy.h" />
+    <ClInclude Include="include\neutral\strategies\ResourceStrategy.h" />
     <ClInclude Include="include\observer\IObservable.h" />
     <ClInclude Include="include\observer\IObserver.h" />
     <ClInclude Include="include\observer\UnitEvent.h" />
