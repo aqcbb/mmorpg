@@ -24,8 +24,8 @@ public:
 
 	GameField(const GameField& other);
 	GameField& operator=(const GameField& other);
-	GameField(GameField&& other) noexcept = default;
-	GameField& operator=(GameField&& other) noexcept = default;
+	GameField(GameField&& other) noexcept;
+	GameField& operator=(GameField&& other) noexcept;
 
 	bool addUnit(std::shared_ptr<Unit> unit, int x, int y);
 	bool removeUnit(int x, int y);

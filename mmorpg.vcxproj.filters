@@ -39,6 +39,9 @@
     <ClCompile Include="src\base\Base.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\controller\GameController.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\attributes\Health.h">
@@ -198,6 +201,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\neutral\operators.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\controller\GameController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

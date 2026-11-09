@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\base\Base.cpp" />
+    <ClCompile Include="src\controller\GameController.cpp" />
     <ClCompile Include="src\core\UnitTypeInfo.cpp" />
     <ClCompile Include="src\factories\ConcreteUnitFactory.cpp" />
     <ClCompile Include="src\field\GameField.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="include\attributes\Attack.h" />
     <ClInclude Include="include\attributes\Health.h" />
     <ClInclude Include="include\base\Base.h" />
+    <ClInclude Include="include\controller\GameController.h" />
     <ClInclude Include="include\core\Position.h" />
     <ClInclude Include="include\core\UnitType.h" />
     <ClInclude Include="include\factories\CataphractFactory.h" />

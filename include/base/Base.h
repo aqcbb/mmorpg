@@ -27,11 +27,6 @@ public:
 	int getHealth() const { return health_; }
 	int getMaxUnits() const { return maxUnits_; }
 	int getDefenseLevel() const { return defenseLevel_; }
-	std::shared_ptr<Unit> getUnitById(int id) const {
-		for (const auto& u : units_) {
-			if (u->getId() == id) return u;
-		}
-		return nullptr;
-	}
+	std::shared_ptr<Unit> getUnitById(int id) const;
 	size_t getUnitCount() const { return units_.size(); }
 };
