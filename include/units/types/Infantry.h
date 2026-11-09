@@ -3,7 +3,7 @@
 
 class Infantry : public Unit {
 public:
-	explicit Infantry(int id = 0) : Unit(100, 15, 20, 'I', id, UnitTypeInfo::getInfo(UnitType::Infantry)) {}
+	explicit Infantry(int id = 0) : Unit(100, 15, 20, 0, 'I', id, UnitTypeInfo::getInfo(UnitType::Infantry)) {}
 
 	std::string getType() const override { return "Infantry"; }
 	std::unique_ptr<Unit> clone() const override {
