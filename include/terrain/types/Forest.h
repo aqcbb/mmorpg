@@ -4,7 +4,6 @@
 class Forest : public Terrain {
 public:
 	bool isPassable(UnitType type) const override {
-		if (type == UnitType::Mage) return false;
 		return true;
 	}
 
