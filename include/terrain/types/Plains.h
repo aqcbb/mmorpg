@@ -13,4 +13,6 @@ class Plains : public Terrain {
 	double getDefenseBonus(UnitType type) const override { 
 		return 0.0; 
 	}
+
+	char getSymbol() const override { return '.'; }
 };

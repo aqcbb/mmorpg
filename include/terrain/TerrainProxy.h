@@ -12,4 +12,5 @@ public:
 	bool isPassable(UnitType type) const override;
 	double getSpeedModifier(UnitType type) const override;
 	double getDefenseBonus(UnitType type) const override;
+	char getSymbol() const override { return realTerrain_->getSymbol(); }
 };

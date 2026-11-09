@@ -3,6 +3,7 @@
 #include "terrain/types/Mountains.h"
 #include "terrain/types/Swamp.h"
 #include "neutral/operators.h"
+#include "core/Colors.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -88,7 +89,43 @@ void GameController::interactWithObject(int unitId, int objX, int objY) {
 }
 
 void GameController::drawField() const {
-	field_.draw(std::cout);
+	for (int y = 0; y < field_.getHeight(); ++y) {
+		for (int x = 0; x < field_.getWidth(); ++x) {
+			if (x == 0 || y == 0 || x == field_.getWidth() - 1 || y == field_.getHeight() - 1) {
+				std::cout << Color::GRAY << 'X' << Color::RESET;
+				continue;
+			}
+
+			auto unit = field_.getUnit(x, y);
+			if (unit) {
+				std::string type = unit->getType();
+				if (type == "Mage") std::cout << Color::MAGENTA << unit->getSymbol() << Color::RESET;
+				else if (type == "FlyingUnit") std::cout << Color::CYAN << unit->getSymbol() << Color::RESET;
+				else if (type == "Infantry") std::cout << Color::RED << unit->getSymbol() << Color::RESET;
+				else if (type == "Archer") std::cout << Color::YELLOW << unit->getSymbol() << Color::RESET;
+				else std::cout << unit->getSymbol();
+				continue;
+			}
+
+			if (y < objects_.size() && x < objects_[y].size() && objects_[y][x]) {
+				if (std::dynamic_pointer_cast<TreasureChest>(objects_[y][x])) std::cout << Color::YELLOW << 'C' << Color::RESET;
+				else if (std::dynamic_pointer_cast<Trap>(objects_[y][x])) std::cout << Color::LRED << 'T' << Color::RESET;
+				else if (std::dynamic_pointer_cast<Altar>(objects_[y][x])) std::cout << Color::MAGENTA << 'A' << Color::RESET;
+				else if (std::dynamic_pointer_cast<EnergySource>(objects_[y][x])) std::cout << Color::CYAN << 'E' << Color::RESET;
+				else std::cout << '?';
+				continue;
+			}
+
+			auto terr = terrain_->getTerrainAt(x, y);
+			char sym = terr->getSymbol();
+			if (sym == '.') std::cout << Color::GREEN << '.' << Color::RESET;
+			else if (sym == '^') std::cout << Color::LGREEN << '^' << Color::RESET;
+			else if (sym == '~') std::cout << Color::BLUE << '~' << Color::RESET;
+			else if (sym == 'M') std::cout << Color::WHITE << 'M' << Color::RESET;
+			else std::cout << sym;
+		}
+		std::cout << '\n';
+	}
 }
 
 void GameController::runCreationAndMovementScenario() {

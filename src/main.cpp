@@ -2,7 +2,7 @@
 #include "controller/GameController.h"
 
 int main() {
-	GameController controller(15, 15);
+	GameController controller(40, 20);
 	controller.setup();
 
 	controller.runCreationAndMovementScenario();

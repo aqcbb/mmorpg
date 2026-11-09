@@ -19,4 +19,6 @@ public:
 		}
 		return 0.0;
 	}
+
+	char getSymbol() const override { return '^'; }
 };
