@@ -47,6 +47,14 @@ public:
 		}
 	}
 
+	void heal(int amount) {
+		health.increase(amount);
+	}
+
+	void boostAttack(int amount) {
+		attack.increase(amount);
+	}
+
 	void subscribe(std::shared_ptr<IObserver> observer) override {
 		observers_.push_back(observer);
 	}
