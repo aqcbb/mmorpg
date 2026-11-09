@@ -14,4 +14,6 @@ public:
 		targetArmor.reduceDamage(dmg);
 		return dmg;
 	}
+
+	void increase(int value) { damage += value; }
 };
