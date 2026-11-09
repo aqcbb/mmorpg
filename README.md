@@ -97,7 +97,8 @@ Unit (абстрактный)
 ```cpp
 for (auto it = field.begin(); it != field.end(); ++it) {
     (*it)->takeDamage(50);
-}```
+}
+```
 
 ## Правило пяти
 
