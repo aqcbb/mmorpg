@@ -1,79 +1,51 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <vector>
 #include "attributes/Armor.h"
 #include "attributes/Attack.h"
 #include "attributes/Health.h"
+#include "attributes/Mana.h"
 #include "core/Position.h"
 #include "core/UnitTypeInfo.h"
 #include "observer/IObservable.h"
 
 class Unit : public IObservable {
 protected:
-	Health health;
-	Armor armor;
-	Attack attack;
-	Point position;
-	char symbol;
-	int id_;
-	std::shared_ptr<UnitTypeInfo> info_;
-	std::vector<std::shared_ptr<IObserver>> observers_;
+    Health health;
+    Armor armor;
+    Attack attack;
+    Mana mana;
+    Point position;
+    char symbol;
+    int id_;
+    std::shared_ptr<UnitTypeInfo> info_;
+    std::vector<std::shared_ptr<IObserver>> observers_;
+
 public:
-	Unit(int hp, int arm, int dmg, char sym, int id, std::shared_ptr<UnitTypeInfo> info) : health(hp), armor(arm), attack(dmg), symbol(sym), id_(id), info_(info) {}
+    Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info);
+    virtual ~Unit() = default;
 
-	virtual ~Unit() = default;
+    virtual std::string getType() const = 0;
+    virtual std::unique_ptr<Unit> clone() const = 0;
+    virtual void move(Point newPos);
+    virtual void attackUnit(Unit& target);
+    virtual void takeDamage(int dmg);
+    void checkDeath(int dmg);
 
-	virtual std::string getType() const = 0;
-	virtual std::unique_ptr<Unit> clone() const = 0;
+    void subscribe(std::shared_ptr<IObserver> observer) override;
+    void unsubscribe(std::shared_ptr<IObserver> observer) override;
+    void notify(const UnitEvent& event) override;
 
-	virtual void move(Point newPos) { position = newPos; }
+    int getId() const;
+    Point getPosition() const;
+    char getSymbol() const;
+    bool isAlive() const;
+    std::shared_ptr<UnitTypeInfo> getInfo() const;
+    int getHealth() const;
 
-	virtual void attackUnit(Unit& target) {
-		int dmg = attack.calculateDamage(target.armor);
-		target.health.decrease(dmg);
-		target.notify({ UnitEventType::Damaged, target.id_, dmg, std::chrono::system_clock::now() });
-		if (target.health.isZero()) {
-			target.notify({ UnitEventType::Destroyed, target.id_, dmg, std::chrono::system_clock::now() });
-		}
-	}
-
-	virtual void takeDamage(int dmg) {
-		int finalDmg = dmg;
-		armor.reduceDamage(finalDmg);
-		health.decrease(finalDmg);
-		notify({ UnitEventType::Damaged, id_, finalDmg, std::chrono::system_clock::now() });
-		if (health.isZero()) {
-			notify({ UnitEventType::Destroyed, id_, finalDmg, std::chrono::system_clock::now() });
-		}
-	}
-
-	void heal(int amount) {
-		health.increase(amount);
-	}
-
-	void boostAttack(int amount) {
-		attack.increase(amount);
-	}
-
-	void subscribe(std::shared_ptr<IObserver> observer) override {
-		observers_.push_back(observer);
-	}
-
-	void unsubscribe(std::shared_ptr<IObserver> observer) override {
-		observers_.erase(std::remove(observers_.begin(), observers_.end(), observer), observers_.end());
-	}
-
-	void notify(const UnitEvent& event) override {
-		for (auto& obs : observers_) {
-			obs->onUnitEvent(event);
-		}
-	}
-
-	int getId() const { return id_; }
-	Point getPosition() const { return position; }
-	char getSymbol() const { return symbol; }
-	int getHealth() const { return health.getValue(); }
-	int getAttack() const { return attack.getDamage(); }
-	bool isAlive() const { return !health.isZero(); }
-	std::shared_ptr<UnitTypeInfo> getInfo() const { return info_; }
+    void heal(int amount);
+    void boostAttack(int amount);
+    void boostMana(int amount);
+    int getMana() const;
 };
