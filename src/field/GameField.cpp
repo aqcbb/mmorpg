@@ -97,7 +97,7 @@ bool GameField::addUnit(std::unique_ptr<Unit> unit, int x, int y) {
 	if (grid[y][x] != nullptr) return false;
 	if (unitCount >= maxUnits) return false;
 
-	unit->move(x, y);
+	unit->move(Point{x,y});
 	grid[y][x] = std::move(unit);
 	++unitCount;
 	return true;

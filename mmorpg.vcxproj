@@ -136,6 +136,9 @@
     <ClInclude Include="include\attributes\Armor.h" />
     <ClInclude Include="include\attributes\Attack.h" />
     <ClInclude Include="include\attributes\Health.h" />
+    <ClInclude Include="include\base\Base.h" />
+    <ClInclude Include="include\core\Position.h" />
+    <ClInclude Include="include\core\UnitType.h" />
     <ClInclude Include="include\factories\CataphractFactory.h" />
     <ClInclude Include="include\factories\HeavyArcherFactory.h" />
     <ClInclude Include="include\factories\HorseArcherFactory.h" />
@@ -145,6 +148,14 @@
     <ClInclude Include="include\factories\UnitFactory.h" />
     <ClInclude Include="include\field\GameField.h" />
     <ClInclude Include="include\field\GameFieldIterator.h" />
+    <ClInclude Include="include\neutral\IInteractionStrategy.h" />
+    <ClInclude Include="include\neutral\NeutralObject.h" />
+    <ClInclude Include="include\observer\IObservable.h" />
+    <ClInclude Include="include\observer\IObserver.h" />
+    <ClInclude Include="include\observer\UnitEvent.h" />
+    <ClInclude Include="include\terrain\Terrain.h" />
+    <ClInclude Include="include\terrain\TerrainProxy.h" />
+    <ClInclude Include="include\terrain\TerrainType.h" />
     <ClInclude Include="include\units\Archer.h" />
     <ClInclude Include="include\units\Cavalry.h" />
     <ClInclude Include="include\units\Infantry.h" />
@@ -152,9 +163,11 @@
     <ClInclude Include="include\units\types\HeavyArcher.h" />
     <ClInclude Include="include\units\types\HorseArcher.h" />
     <ClInclude Include="include\units\types\LightArcher.h" />
+    <ClInclude Include="include\units\types\Ninja.h" />
     <ClInclude Include="include\units\types\Spearman.h" />
     <ClInclude Include="include\units\types\Swordsman.h" />
     <ClInclude Include="include\units\Unit.h" />
+    <ClInclude Include="include\core\UnitTypeInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
