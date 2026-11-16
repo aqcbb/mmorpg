@@ -3,13 +3,15 @@
 #include <string>
 #include "core/UnitType.h"
 #include "command/CommandHistory.h"
+#include "handler/Handler.h"
 
 class GameMediator;
 class Command;
 
-class GameFacade {
+class GameFacade : public std::enable_shared_from_this<GameFacade> {
 private:
 	std::shared_ptr<GameMediator> mediator_;
+    std::shared_ptr<Handler> handlerChain_;
     CommandHistory history_;
 
 public:
