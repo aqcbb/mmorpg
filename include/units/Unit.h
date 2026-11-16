@@ -21,6 +21,7 @@ protected:
     Point position;
     char symbol;
     int id_;
+    std::string currentOrder_;
     std::shared_ptr<UnitTypeInfo> info_;
     std::vector<std::weak_ptr<IObserver>> observers_;
 
@@ -30,6 +31,7 @@ public:
 
     virtual std::string getType() const = 0;
     virtual std::unique_ptr<Unit> clone() const = 0;
+
     virtual void move(Point newPos);
     virtual void attackUnit(Unit& target);
     virtual void takeDamage(int dmg);
@@ -45,11 +47,17 @@ public:
     bool isAlive() const;
     std::shared_ptr<UnitTypeInfo> getInfo() const;
     int getHealth() const;
+    int getArmorValue() const;
+    int getDamageValue() const;
+
+    void setOrder(const std::string& order) { currentOrder_ = order; }
+    std::string getOrder() const { return currentOrder_; }
 
     void heal(int amount);
     void boostAttack(int amount);
     void boostMana(int amount);
     int getMana() const;
+
     void addResources(const Resources& res);
     Resources getInventory() const;
     void clearInventory();

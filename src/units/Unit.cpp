@@ -65,20 +65,20 @@ char Unit::getSymbol() const { return symbol; }
 bool Unit::isAlive() const { return !health.isZero(); }
 std::shared_ptr<UnitTypeInfo> Unit::getInfo() const { return info_; }
 int Unit::getHealth() const { return health.getValue(); }
+int Unit::getArmorValue() const { return armor.getValue(); }
+int Unit::getDamageValue() const { return attack.getDamage(); }
+int Unit::getMana() const { return mana.getValue(); }
 
 void Unit::heal(int amount) { health.increase(amount); }
 void Unit::boostAttack(int amount) { attack.increase(amount); }
 void Unit::boostMana(int amount) { mana.increase(amount); }
-int Unit::getMana() const { return mana.getValue(); }
 
 void Unit::addResources(const Resources& res) {
     inventory_ = inventory_ + res;
 }
-
 Resources Unit::getInventory() const {
     return inventory_;
 }
-
 void Unit::clearInventory() {
     inventory_ = Resources(0, 0, 0);
 }
