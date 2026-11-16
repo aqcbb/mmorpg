@@ -6,6 +6,10 @@
 class ResourceStrategy : public IInteractionStrategy {
 public:
 	void apply(Unit& unit) override {
-		std::cout << "[Strategy] Unit " << unit.getId() << " collected resources (gold +50)\n";
+		Resources loot(50, 20, 10);
+		unit.addResources(loot);
+		std::cout << "[Strategy] Unit " << unit.getId() << " collected: ";
+		loot.print();
+		std::cout << "\n";
 	}
 };

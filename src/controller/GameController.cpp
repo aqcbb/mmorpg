@@ -83,6 +83,8 @@ void GameController::interactWithObject(int unitId, int objX, int objY) {
 
 	if (auto chest = std::dynamic_pointer_cast<TreasureChest>(obj)) {
 		*unit + *chest;
+		base_->addResources(unit->getInventory());
+		unit->clearInventory();
 	}
 	else if (auto trap = std::dynamic_pointer_cast<Trap>(obj)) {
 		*unit - *trap;
