@@ -34,4 +34,9 @@ public:
     void notifyUnitCreated(int unitId);
     void notifyResourceCollected(int unitId, int amount);
     void notifyCombatResolved(int attackerId, int targetId, int damage);
+    void notifyBuildingCompleted(int buildingId);
+    void notifyResearchCompleted(const std::string& tech);
+
+    std::shared_ptr<UnitManager> getUnitManager() const { return unitManager_; }
+    std::shared_ptr<BuildingManager> getBuildingManager() const { return buildingManager_; }
 };
