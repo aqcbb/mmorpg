@@ -68,3 +68,14 @@ bool Base::spendResources(const Resources& cost) {
 	resources_ = resources_ - cost;
 	return true;
 }
+
+void Base::addBuilding(std::shared_ptr<Building> building) {
+	buildings_.push_back(building);
+}
+
+std::shared_ptr<Building> Base::getBuildingById(int id) const {
+	for (const auto& b : buildings_) {
+		if (b->getId() == id) return b;
+	}
+	return nullptr;
+}

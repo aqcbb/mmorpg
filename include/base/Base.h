@@ -7,6 +7,7 @@
 #include <vector>
 
 class Unit;
+class Building;
 
 class Base : public IObserver, public std::enable_shared_from_this<Base> {
 private:
@@ -15,7 +16,9 @@ private:
 	int defenseLevel_;
 	Resources resources_;
 	int nextUnitId_;
+	int nextBuildingId_;
 	std::vector<std::shared_ptr<Unit>> units_;
+	std::vector<std::shared_ptr<Building>> buildings_;
 public:
 	Base(int health, int maxUnits, int defenseLevel);
 	~Base() override = default;
@@ -24,6 +27,9 @@ public:
 
 	std::shared_ptr<Unit> createUnit(UnitType type, int x, int y);
 	void removeUnit(int unitId);
+
+	void addBuilding(std::shared_ptr<Building> building);
+	std::shared_ptr<Building> getBuildingById(int id) const;
 
 	void addResources(const Resources& res);
 	bool spendResources(const Resources& cost);
@@ -34,4 +40,5 @@ public:
 	int getDefenseLevel() const { return defenseLevel_; }
 	std::shared_ptr<Unit> getUnitById(int id) const;
 	size_t getUnitCount() const { return units_.size(); }
+	size_t getBuildingCount() const { return buildings_.size(); }
 };
