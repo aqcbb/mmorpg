@@ -1,6 +1,7 @@
 #pragma once
 
 #include "observer/IObserver.h"
+#include "core/Resources.h"
 #include "core/UnitType.h"
 #include <memory>
 #include <vector>
@@ -12,7 +13,7 @@ private:
 	int health_;
 	int maxUnits_;
 	int defenseLevel_;
-	int resources_;
+	Resources resources_;
 	int nextUnitId_;
 	std::vector<std::shared_ptr<Unit>> units_;
 public:
@@ -23,6 +24,10 @@ public:
 
 	std::shared_ptr<Unit> createUnit(UnitType type, int x, int y);
 	void removeUnit(int unitId);
+
+	void addResources(const Resources& res);
+	bool spendResources(const Resources& cost);
+	Resources getResources() const { return resources_; }
 
 	int getHealth() const { return health_; }
 	int getMaxUnits() const { return maxUnits_; }

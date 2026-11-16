@@ -70,3 +70,15 @@ void Unit::heal(int amount) { health.increase(amount); }
 void Unit::boostAttack(int amount) { attack.increase(amount); }
 void Unit::boostMana(int amount) { mana.increase(amount); }
 int Unit::getMana() const { return mana.getValue(); }
+
+void Unit::addResources(const Resources& res) {
+    inventory_ = inventory_ + res;
+}
+
+Resources Unit::getInventory() const {
+    return inventory_;
+}
+
+void Unit::clearInventory() {
+    inventory_ = Resources(0, 0, 0);
+}

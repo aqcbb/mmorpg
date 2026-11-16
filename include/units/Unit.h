@@ -8,6 +8,7 @@
 #include "attributes/Mana.h"
 #include "core/Position.h"
 #include "core/UnitTypeInfo.h"
+#include "core/Resources.h"
 #include "observer/IObservable.h"
 
 class Unit : public IObservable {
@@ -16,6 +17,7 @@ protected:
     Armor armor;
     Attack attack;
     Mana mana;
+    Resources inventory_;
     Point position;
     char symbol;
     int id_;
@@ -48,4 +50,7 @@ public:
     void boostAttack(int amount);
     void boostMana(int amount);
     int getMana() const;
+    void addResources(const Resources& res);
+    Resources getInventory() const;
+    void clearInventory();
 };

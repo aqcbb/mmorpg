@@ -52,3 +52,19 @@ std::shared_ptr<Unit> Base::getUnitById(int id) const {
 	}
 	return nullptr;
 }
+
+void Base::addResources(const Resources& res) {
+	resources_ = resources_ + res;
+	std::cout << "[Base] Resources received! Current: ";
+	resources_.print();
+	std::cout << "\n";
+}
+
+bool Base::spendResources(const Resources& cost) {
+	if (!resources_.hasEnough(cost)) {
+		std::cout << "[Base] Not enough resources!\n";
+		return false;
+	}
+	resources_ = resources_ - cost;
+	return true;
+}
