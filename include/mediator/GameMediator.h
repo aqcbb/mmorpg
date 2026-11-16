@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include "core/UnitType.h"
+#include "terrain/TerrainMap.h"
 
 class Base;
 class UnitManager;
@@ -16,6 +17,8 @@ private:
     std::shared_ptr<BuildingManager> buildingManager_;
     std::shared_ptr<ResourceSystem> resourceSystem_;
     std::shared_ptr<CombatSystem> combatSystem_;
+
+    std::shared_ptr<TerrainMap> terrainMap_;
 
 public:
     GameMediator();
@@ -39,4 +42,6 @@ public:
 
     std::shared_ptr<UnitManager> getUnitManager() const { return unitManager_; }
     std::shared_ptr<BuildingManager> getBuildingManager() const { return buildingManager_; }
+
+    std::shared_ptr<TerrainMap> getTerrainMap() const { return terrainMap_; }
 };

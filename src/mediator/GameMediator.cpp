@@ -13,6 +13,7 @@ GameMediator::GameMediator() {
     buildingManager_ = std::make_shared<BuildingManager>();
     resourceSystem_ = std::make_shared<ResourceSystem>();
     combatSystem_ = std::make_shared<CombatSystem>();
+    terrainMap_ = std::make_shared<TerrainMap>(40, 20);
 }
 
 void GameMediator::createUnit(UnitType type, int x, int y) {
@@ -35,8 +36,9 @@ void GameMediator::attack(int attackerId, int targetId) {
     auto target = unitManager_->getUnitById(targetId);
 
     if (attacker && target) {
+        int dmg = combatSystem_->calculateDamage(*attacker, *target);
         combatSystem_->resolveCombat(*attacker, *target);
-        notifyCombatResolved(attackerId, targetId, 20);
+        notifyCombatResolved(attackerId, targetId, dmg);
         if (!target->isAlive()) {
             unitManager_->removeUnit(targetId);
             base_->removeUnit(targetId);
@@ -50,9 +52,12 @@ void GameMediator::attack(int attackerId, int targetId) {
 void GameMediator::collectResource(int unitId, int resourcePointId) {
     auto unit = unitManager_->getUnitById(unitId);
     if (unit) {
-        Resources loot(10, 5, 0);
+        Resources loot(50, 20, 10);
         unit->addResources(loot);
-        notifyResourceCollected(unitId, 15);
+        base_->addResources(loot);
+
+        std::cout << "[Mediator] Unit " << unitId << " collected resources.\n";
+        notifyResourceCollected(unitId, 50);
     }
     else {
         std::cout << "[Mediator] Unit not found.\n";
@@ -83,7 +88,41 @@ void GameMediator::research(const std::string& techId) {
 }
 
 void GameMediator::distributeResources(const std::string& from, const std::string& to, int amount) {
-    std::cout << "[Mediator] Distributed " << amount << " resources from " << from << " to " << to << ".\n";
+    if (!base_) return;
+
+    Resources current = base_->getResources();
+    Resources cost;
+
+    if (from == "wood") {
+        if (current.getWood() < amount) {
+            std::cout << "[Mediator] Not enough wood! You have " << current.getWood() << ".\n";
+            return;
+        }
+        cost = Resources(amount, 0, 0);
+    }
+    else if (from == "metal") {
+        if (current.getMetal() < amount) {
+            std::cout << "[Mediator] Not enough metal!\n";
+            return;
+        }
+        cost = Resources(0, amount, 0);
+    }
+    else if (from == "energy") {
+        if (current.getEnergy() < amount) {
+            std::cout << "[Mediator] Not enough energy!\n";
+            return;
+        }
+        cost = Resources(0, 0, amount);
+    }
+    else {
+        std::cout << "[Mediator] Unknown resource type: " << from << "\n";
+        return;
+    }
+
+    if (base_->spendResources(cost)) {
+        std::cout << "[Mediator] Successfully distributed " << amount << " " << from << " to " << to << ".\n";
+        notifyResourceCollected(0, amount);
+    }
 }
 
 void GameMediator::produceUnit(int buildingId, UnitType type) {

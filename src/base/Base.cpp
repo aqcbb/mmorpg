@@ -36,6 +36,8 @@ std::shared_ptr<Unit> Base::createUnit(UnitType type, int x, int y) {
 	
 	std::shared_ptr<Unit> sharedUnit = std::move(unit);
 
+	sharedUnit->move(Point{ x, y });
+
 	sharedUnit->subscribe(shared_from_this());
 	sharedUnit->notify({ UnitEventType::Created, sharedUnit->getId(), 0,
 						 std::chrono::system_clock::now() });

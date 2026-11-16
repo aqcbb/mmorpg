@@ -17,6 +17,8 @@ private:
 public:
 	explicit GameFacade(std::shared_ptr<GameMediator> mediator);
 
+    void init();
+
     void createUnit(UnitType type, int x, int y);
     void moveUnit(int unitId, int x, int y);
     void attack(int attackerId, int targetId);
@@ -28,14 +30,11 @@ public:
     void produceUnit(int buildingId, UnitType type);
     void getStats() const;
 
-    void executeCommand(std::shared_ptr<Command> cmd) {
-        if (cmd) {
-            cmd->execute();
-            history_.push(cmd);
-        }
-    }
+    void executeCommand(std::shared_ptr<Command> cmd);
     void undoLastCommand() {
         history_.undo();
     }
 	void processInput(const std::string& input);
+
+    void renderMap() const;
 };

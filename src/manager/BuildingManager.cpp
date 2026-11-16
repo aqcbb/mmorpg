@@ -10,11 +10,16 @@
 
 std::shared_ptr<Building> BuildingManager::buildBuilding(const std::string& type, int x, int y) {
     std::shared_ptr<Building> b;
-    if (type == "Barracks") b = std::make_shared<Barracks>(nextId_++, x, y);
-    else if (type == "PowerPlant") b = std::make_shared<PowerPlant>(nextId_++, x, y);
-    else if (type == "Laboratory") b = std::make_shared<Laboratory>(nextId_++, x, y);
-    else if (type == "Warehouse") b = std::make_shared<Warehouse>(nextId_++, x, y);
-    else if (type == "Hospital") b = std::make_shared<Hospital>(nextId_++, x, y);
+    if (type == "Barracks" || type == "barracks")
+        b = std::make_shared<Barracks>(nextId_++, x, y);
+    else if (type == "PowerPlant" || type == "powerplant")
+        b = std::make_shared<PowerPlant>(nextId_++, x, y);
+    else if (type == "Laboratory" || type == "laboratory")
+        b = std::make_shared<Laboratory>(nextId_++, x, y);
+    else if (type == "Warehouse" || type == "warehouse")
+        b = std::make_shared<Warehouse>(nextId_++, x, y);
+    else if (type == "Hospital" || type == "hospital")
+        b = std::make_shared<Hospital>(nextId_++, x, y);
     else {
         std::cout << "[BuildingManager] Unknown building type: " << type << "\n";
         return nullptr;

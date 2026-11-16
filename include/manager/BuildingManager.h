@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "building/Building.h"
+#include "core/UnitType.h"
 
 class BuildingManager {
 private:

@@ -11,5 +11,6 @@ public:
     void removeUnit(int unitId);
     std::shared_ptr<Unit> getUnitById(int id) const;
     bool moveUnit(int unitId, int x, int y);
+    const std::vector<std::shared_ptr<Unit>>& getAllUnits() const { return units_; }
     void printAllUnits() const;
 };
