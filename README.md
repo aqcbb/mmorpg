@@ -1,112 +1,79 @@
 # MMORPG
 
-[![Version](https://img.shields.io/badge/version-2.1.0-green.svg)](https://github.com/aqcbb/mmorpg/releases)
+[![Version](https://img.shields.io/badge/version-3.0.0-green.svg)](https://github.com/aqcbb/mmorpg/releases)
 [![C++](https://img.shields.io/badge/C%2B%2B-14-blue.svg)]()
 
 Лабораторная работа по ООП
 
 **Язык:** C++14. **Сборка:** Visual Studio 2022
 
-## Демонстрация
+# MMORPG: Lab 3 (Facade, Mediator, Command, Chain of Responsibility)
 
-Поле с базой, юнитами, ландшафтами и нейтральными объектами:
+## Архитектура и UML
 
-![Скриншот консоли](docs/screenshot_lab2.png)
+Система построена на четырех ключевых паттернах:
+1. **Фасад (Facade)** — `GameFacade` предоставляет единый интерфейс для пользователя, скрывая сложность подсистем.
+2. **Посредник (Mediator)** — `GameMediator` координирует взаимодействие между `Base`, `UnitManager`, `BuildingManager`, `ResourceSystem` и `CombatSystem`.
+3. **Команда (Command)** — Все действия пользователя оформлены как классы, наследующие `Command` (например, `CreateUnitCommand`, `MoveUnitCommand`).
+4. **Цепочка обязанностей (Chain of Responsibility)** — Обработка текстового ввода идет по цепочке хендлеров (`CreateHandler` -> `MoveHandler` -> ... -> `StatsHandler`).
 
-## Структура проекта
-```
-include/
-├── attributes/ # Health, Armor, Attack
-├── base/ # Base (учет юнитов, Observer)
-├── controller/ # GameController (интеграция)
-├── core/ # UnitType, UnitTypeInfo, Point, Colors
-├── factories/ # UnitFactory, ConcreteUnitFactory
-├── field/ # GameField, GameFieldIterator
-├── neutral/ # NeutralObject, IInteractionStrategy + объекты и стратегии
-├── observer/ # IObserver, IObservable, UnitEvent
-├── terrain/ # Terrain, TerrainProxy, TerrainMap + типы ландшафта
-└── units/ # Unit + Infantry, Archer, Mage, FlyingUnit
-src/
-├── base/
-├── controller/
-├── core/
-├── factories/
-├── field/
-├── neutral/
-├── terrain/
-└── main.cpp # Демонстрационные сценарии
-```
-
-## Юниты
-```
-Unit (абстрактный)
-├── Infantry (Пехота)
-├── Archer (Лучник)
-├── Mage (Маг)
-└── FlyingUnit (Летающий)
-```
-
-Базовый `Unit` хранит атрибуты (`Health`, `Armor`, `Attack`), координаты, `id`, символ для отрисовки и ссылку на `UnitTypeInfo`. Наследуется от `IObservable` для рассылки событий.
-
-## Атрибуты
-
-- **Health** — `decrease`, `increase`, `isZero`; HP не уходит ниже 0.
-- **Armor** — `reduceDamage(damage)` уменьшает урон на величину брони.
-- **Attack** — `getDamage()`, `calculateDamage(const Armor&)`.
-
-## Паттерн: Наблюдатель (Observer)
-
-`Base` реализует `IObserver` и подписывается на события юнитов (`UnitEvent`).
-Юнит наследует `IObservable` и при получении урона или смерти вызывает `notify()`.
-База получает уведомление `Destroyed` и освобождает лимит юнитов (`maxUnits`).
-
-## Паттерн: Прокси (Proxy)
-
-`TerrainProxy` наследует `Terrain` и оборачивает реальный ландшафт (`Plains`, `Forest`, `Swamp`, `Mountains`).
-Он перехватывает запросы `isPassable`, `getSpeedModifier`, `getDefenseBonus`.
-Главная особенность — летающие юниты (`FlyingUnit`) проходят любые горы и не замедляются болотом, игнорируя ограничения реального ландшафта.
-
-## Паттерн: Стратегия (Strategy)
-
-`IInteractionStrategy` инкапсулирует алгоритмы влияния на юнитов.
-`NeutralObject` хранит стратегию и делегирует ей работу.
-
-- `TreasureChest` → `ResourceStrategy` (сбор ресурсов).
-- `Trap` → `DamageStrategy` (нанесение урона).
-- `EnergySource` → `HealthRestoreStrategy` (восстановление HP).
-- `Altar` → динамически выбирает `AttackBoostStrategy` (для пехоты/лучников) или `ManaBoostStrategy` (для магов).
-
-## Перегрузка операторов
-
-Взаимодействие реализовано как свободные операторы:
-- `unit + chest` — юнит собирает ресурсы.
-- `unit - trap` — юнит получает урон.
-- `unit * altar` — юнит получает временный бафф.
-- `unit / source` — юнит восстанавливает здоровье.
-
-## GameField и TerrainMap
-
-- `GameField` — прямоугольная сетка (`std::vector<std::vector<std::shared_ptr<Unit>>>`), хранит юнитов, отрисовывает их, поддерживает итератор по занятым клеткам.
-- `TerrainMap` — матрица ландшафтов (`std::vector<std::vector<std::shared_ptr<TerrainProxy>>>`), отвечает за свойства клеток.
-- `Base` — физически занимает клетку на карте (отрисовывается символом `B`), создаёт юнитов через фабрику, ведёт их учёт и реагирует на смерть.
-
-## Итератор
-
-`GameField::Iterator` обходит **только занятые клетки**, пропуская рамку и пустые. Поддерживает `*`, `++`, `!=`.
-
-```cpp
-for (auto it = field.begin(); it != field.end(); ++it) {
-    (*it)->takeDamage(50);
-}
+```mermaid
+classDiagram
+    class GameFacade {
+        -GameMediator mediator_
+        -Handler handlerChain_
+        +processInput(string)
+        +executeCommand(Command)
+    }
+    class GameMediator {
+        -Base base_
+        -UnitManager unitManager_
+        -BuildingManager buildingManager_
+        -ResourceSystem resourceSystem_
+        -CombatSystem combatSystem_
+    }
+    class Command {
+        <<interface>>
+        +execute()
+    }
+    class Handler {
+        <<interface>>
+        +handle(string)
+    }
+    GameFacade --> GameMediator
+    GameFacade --> Handler
+    Handler --> Command
+    Command --> GameMediator
 ```
 
-## Правило пяти
+## Предметная область
 
-Реализованы все 5 методов `GameField`: деструктор, copy ctor, copy assign, move ctor, move assign. Копирование — глубокое, через `clone()` каждого юнита (при переходе на `shared_ptr` move-операции используют `= default`).
+*   **Base** — управляет юнитами, ресурсами и зданиями. Реализует `IObserver` для отслеживания смерти юнитов.
+*   **Unit** — базовый класс юнитов (`Infantry`, `Scout`, `Tank`, `Worker`, `Medic`).
+*   **Building** — базовый класс зданий (`Barracks`, `PowerPlant`, `Laboratory`, `Warehouse`, `Hospital`).
+*   **UnitManager** — хранит всех юнитов, умеет перемещать и удалять.
+*   **BuildingManager** — управляет постройкой зданий и производством.
+*   **ResourceSystem** — управляет запасами (дерево, металл, энергия).
+*   **CombatSystem** — рассчитывает урон с учетом атаки и брони.
+
+## Команды (примеры)
+
+*   `create unit <type> at <x>,<y>`
+*   `move unit <id> to <x>,<y>`
+*   `attack unit <id> target <id>`
+*   `collect unit <id> from <resourceId>`
+*   `build <type> at <x>,<y>`
+*   `research <techId>`
+*   `distribute <resource> to <target> <amount>`
+*   `produce <type> in <buildingId>`
+*   `stats`
+*   `map`
 
 ## Сценарии
 
-- `runCreationAndMovementScenario` — создание базы, спавн юнитов через фабрику, отрисовка карты.
-- `runTerrainProxyScenario` — проверка `Proxy`: пехота не проходит горы, летающий юнит пролетает.
-- `runNeutralObjectsScenario` — взаимодействие с объектами через операторы (ловушка бьёт мага).
-- `runObserverDeathScenario` — уничтожение юнита и уведомление базы через `Observer`.
+В `main.cpp` реализованы 4 сценария:
+
+1. **Создание и статистика** — спавн юнитов, вывод `stats`.
+2. **Перемещение и атака** — `move unit 1 to 10,10`, `attack unit 1 target 2`.
+3. **Постройка и исследование** — `build barracks at 20,15`, `research attack_upgrade`, `produce infantry in 1`.
+4. **Сбор и распределение ресурсов** — `collect unit 3 from 1`, `distribute wood to barracks 50`.
