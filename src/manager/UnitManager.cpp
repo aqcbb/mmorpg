@@ -18,6 +18,18 @@ std::shared_ptr<Unit> UnitManager::getUnitById(int id) const {
     return nullptr;
 }
 
+bool UnitManager::moveUnit(int unitId, int x, int y) {
+    auto unit = getUnitById(unitId);
+    if (!unit) {
+        std::cout << "[UnitManager] Unit with ID " << unitId << " not found.\n";
+        return false;
+    }
+
+    unit->move(Point{ x, y });
+    std::cout << "[UnitManager] Unit " << unitId << " moved to (" << x << ", " << y << ").\n";
+    return true;
+}
+
 void UnitManager::printAllUnits() const {
     std::cout << "--- Units ---\n";
     for (const auto& u : units_) {

@@ -43,3 +43,7 @@ void GameMediator::notifyCombatResolved(int attackerId, int targetId, int damage
     std::cout << "[Mediator] Unit " << attackerId << " attacked Unit " << targetId
         << " for " << damage << " damage.\n";
 }
+
+void GameMediator::moveUnit(int unitId, int x, int y) {
+    unitManager_->moveUnit(unitId, x, y);
+}
