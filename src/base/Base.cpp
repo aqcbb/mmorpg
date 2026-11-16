@@ -1,11 +1,12 @@
 #include "base/Base.h"
 #include "units/Unit.h"
+#include "building/Building.h"
 #include "factories/ConcreteUnitFactory.h"
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
 
-Base::Base(int health, int maxUnits, int defenseLevel) : health_(health), maxUnits_(maxUnits), defenseLevel_(defenseLevel), resources_(0), nextUnitId_(1) {}
+Base::Base(int health, int maxUnits, int defenseLevel) : health_(health), maxUnits_(maxUnits), defenseLevel_(defenseLevel), resources_(0, 0, 0), nextUnitId_(1) {}
 
 void Base::onUnitEvent(const UnitEvent& event) {
 	switch (event.type) {
