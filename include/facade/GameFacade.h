@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include "core/UnitType.h"
+#include "command/CommandHistory.h"
 
 class GameMediator;
 class Command;
@@ -9,6 +10,7 @@ class Command;
 class GameFacade {
 private:
 	std::shared_ptr<GameMediator> mediator_;
+    CommandHistory history_;
 
 public:
 	explicit GameFacade(std::shared_ptr<GameMediator> mediator);
@@ -24,6 +26,14 @@ public:
     void produceUnit(int buildingId, UnitType type);
     void getStats() const;
 
-	void executeCommand(std::shared_ptr<Command> cmd);
+    void executeCommand(std::shared_ptr<Command> cmd) {
+        if (cmd) {
+            cmd->execute();
+            history_.push(cmd);
+        }
+    }
+    void undoLastCommand() {
+        history_.undo();
+    }
 	void processInput(const std::string& input);
 };
