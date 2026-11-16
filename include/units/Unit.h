@@ -20,7 +20,7 @@ protected:
     char symbol;
     int id_;
     std::shared_ptr<UnitTypeInfo> info_;
-    std::vector<std::shared_ptr<IObserver>> observers_;
+    std::vector<std::weak_ptr<IObserver>> observers_;
 
 public:
     Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info);

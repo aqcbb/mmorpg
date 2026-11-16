@@ -137,11 +137,13 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\terrain\TerrainMap.cpp" />
     <ClCompile Include="src\terrain\TerrainProxy.cpp" />
+    <ClCompile Include="src\units\Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\attributes\Armor.h" />
     <ClInclude Include="include\attributes\Attack.h" />
     <ClInclude Include="include\attributes\Health.h" />
+    <ClInclude Include="include\attributes\Mana.h" />
     <ClInclude Include="include\base\Base.h" />
     <ClInclude Include="include\controller\GameController.h" />
     <ClInclude Include="include\core\Colors.h" />

@@ -37,11 +37,26 @@ void Unit::subscribe(std::shared_ptr<IObserver> observer) {
 }
 
 void Unit::unsubscribe(std::shared_ptr<IObserver> observer) {
-    observers_.erase(std::remove(observers_.begin(), observers_.end(), observer), observers_.end());
+    observers_.erase(
+        std::remove_if(observers_.begin(), observers_.end(),
+            [&](const std::weak_ptr<IObserver>& wp) {
+                auto sp = wp.lock();
+                return !sp || sp == observer;
+            }),
+        observers_.end()
+    );
 }
 
 void Unit::notify(const UnitEvent& event) {
-    for (auto& obs : observers_) obs->onUnitEvent(event);
+    for (auto it = observers_.begin(); it != observers_.end(); ) {
+        if (auto obs = it->lock()) {
+            obs->onUnitEvent(event);
+            ++it;
+        }
+        else {
+            it = observers_.erase(it);
+        }
+    }
 }
 
 int Unit::getId() const { return id_; }
