@@ -4,5 +4,9 @@ enum class UnitType {
 	Infantry,
 	Archer,
 	Mage,
-	FlyingUnit
+	FlyingUnit,
+	Scout,
+	Tank,
+	Worker,
+	Medic
 };

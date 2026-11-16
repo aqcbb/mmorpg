@@ -7,7 +7,7 @@ private:
 	int maxMp;
 public:
 	Mana(int max) : maxMp(max), mp(max) {
-		if (max <= 0) throw std::invalid_argument("Max MP must be positive");
+		if (max < 0) throw std::invalid_argument("Max MP cannot be negative");
 	}
 
 	void decrease(int amount) {

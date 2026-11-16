@@ -17,6 +17,14 @@ std::unordered_map<UnitType, std::shared_ptr<UnitTypeInfo>> UnitTypeInfo::create
 
 	reg[UnitType::FlyingUnit] = std::make_shared<UnitTypeInfo>(UnitType::FlyingUnit, 70, 15, 1.5, 70);
 
+	reg[UnitType::Scout] = std::make_shared<UnitTypeInfo>(UnitType::Scout, 50, 10, 1.8, 40);
+
+	reg[UnitType::Tank] = std::make_shared<UnitTypeInfo>(UnitType::Tank, 200, 40, 0.7, 100);
+
+	reg[UnitType::Worker] = std::make_shared<UnitTypeInfo>(UnitType::Worker, 80, 5, 1.0, 30);
+
+	reg[UnitType::Medic] = std::make_shared<UnitTypeInfo>(UnitType::Medic, 60, 5, 1.0, 45);
+
 	return reg;
 }
 
