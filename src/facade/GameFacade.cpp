@@ -32,13 +32,12 @@
 #include "handler/handlers/StatsHandler.h"
 #include "handler/handlers/MapHandler.h"
 #include "handler/handlers/DistributeHandler.h"
+#include "handler/handlers/LoggerHandler.h"
 
 #include <iostream>
 
-GameFacade::GameFacade(std::shared_ptr<GameMediator> mediator)
-    : mediator_(mediator)
-{
-}
+GameFacade::GameFacade(std::shared_ptr<GameMediator> mediator, std::shared_ptr<LoggingProxy> logger)
+    : mediator_(mediator), logger_(logger) {}
 
 void GameFacade::init() {
     auto create = std::make_shared<CreateHandler>(shared_from_this());
@@ -52,6 +51,7 @@ void GameFacade::init() {
     auto produce = std::make_shared<ProduceHandler>(shared_from_this());
     auto stats = std::make_shared<StatsHandler>(shared_from_this());
     auto mapHandler = std::make_shared<MapHandler>(shared_from_this());
+    auto loggerHandler = std::make_shared<LoggerHandler>(shared_from_this());
 
     create->setNext(move);
     move->setNext(attack);
@@ -63,7 +63,8 @@ void GameFacade::init() {
     research->setNext(produce);
     produce->setNext(stats);
     stats->setNext(mapHandler);
-    mapHandler->setNext(nullptr);
+    mapHandler->setNext(loggerHandler);
+    loggerHandler->setNext(nullptr);
 
     handlerChain_ = create;
 }
@@ -76,6 +77,10 @@ void GameFacade::executeCommand(std::shared_ptr<Command> cmd) {
 }
 
 void GameFacade::processInput(const std::string& input) {
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "USER", input));
+    }
+
     if (!handlerChain_ || !handlerChain_->handle(input)) {
         std::cout << "[Facade] Unknown or invalid command: " << input << "\n";
     }

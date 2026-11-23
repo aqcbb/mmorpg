@@ -4,6 +4,7 @@
 #include "core/UnitType.h"
 #include "command/CommandHistory.h"
 #include "handler/Handler.h"
+#include "logging/LoggingProxy.h"
 
 class GameMediator;
 class Command;
@@ -11,11 +12,12 @@ class Command;
 class GameFacade : public std::enable_shared_from_this<GameFacade> {
 private:
 	std::shared_ptr<GameMediator> mediator_;
+    std::shared_ptr<LoggingProxy> logger_;
     std::shared_ptr<Handler> handlerChain_;
     CommandHistory history_;
 
 public:
-	explicit GameFacade(std::shared_ptr<GameMediator> mediator);
+	explicit GameFacade(std::shared_ptr<GameMediator> mediator, std::shared_ptr<LoggingProxy> logger);
 
     void init();
 
@@ -37,4 +39,6 @@ public:
 	void processInput(const std::string& input);
 
     void renderMap() const;
+
+    std::shared_ptr<LoggingProxy> getLogger() const { return logger_; }
 };

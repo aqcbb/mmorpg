@@ -1,12 +1,14 @@
 ﻿#include "mediator/GameMediator.h"
 #include "facade/GameFacade.h"
+#include "logging/LoggingProxy.h"
 #include <iostream>
 #include <string>
 
 int main() {
     auto mediator = std::make_shared<GameMediator>();
-    auto facade = std::make_shared<GameFacade>(mediator);
+    auto logger = std::make_shared<LoggingProxy>();
 
+    auto facade = std::make_shared<GameFacade>(mediator, logger);
     facade->init();
 
     std::cout << "\n(!) Scenario 1: Creation & Stats\n\n";
