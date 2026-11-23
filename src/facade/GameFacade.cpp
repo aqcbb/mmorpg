@@ -84,10 +84,6 @@ void GameFacade::processInput(const std::string& input) {
     if (!handlerChain_ || !handlerChain_->handle(input)) {
         std::cout << "[Facade] Unknown or invalid command: " << input << "\n";
     }
-
-    if (input != "exit" && input != "quit" && input != "stats" && input != "map") {
-        renderMap();
-    }
 }
 
 void GameFacade::createUnit(UnitType type, int x, int y) {
