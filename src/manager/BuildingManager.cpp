@@ -44,10 +44,14 @@ void BuildingManager::startResearch(const std::string& techId) {
 void BuildingManager::produceUnit(int buildingId, UnitType unitType) {
     auto b = getBuildingById(buildingId);
     if (b) {
-        std::cout << "[BuildingManager] Building " << buildingId << " produced unit type " << static_cast<int>(unitType) << "\n";
+        if (logger_) {
+            logger_->log(LogEvent("INFO", "BASE", "Building " + std::to_string(buildingId) + " produced unit (type " + std::to_string(static_cast<int>(unitType)) + ")"));
+        }
     }
     else {
-        std::cout << "[BuildingManager] Building " << buildingId << " not found.\n";
+        if (logger_) {
+            logger_->log(LogEvent("ERROR", "BASE", "Building " + std::to_string(buildingId) + " not found for production"));
+        }
     }
 }
 
