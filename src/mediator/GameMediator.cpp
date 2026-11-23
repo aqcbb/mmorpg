@@ -24,6 +24,11 @@ GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
 }
 
 void GameMediator::createUnit(UnitType type, int x, int y) {
+    if (!gameField_ || !gameField_->inBounds(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot create unit: out of bounds"));
+        return;
+    }
+
     auto unit = base_->createUnit(type, x, y);
     if (unit) {
         unitManager_->addUnit(unit);
@@ -35,7 +40,27 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
 }
 
 void GameMediator::moveUnit(int unitId, int x, int y) {
+    if (!gameField_ || !gameField_->inBounds(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Cannot move unit: out of bounds"));
+        return;
+    }
+
+    auto unit = unitManager_->getUnitById(unitId);
+    if (!unit) {
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Unit not found"));
+        return;
+    }
+
     unitManager_->moveUnit(unitId, x, y);
+
+    if (auto obj = getObjectAt(x, y)) {
+        if (logger_) {
+            logger_->log(LogEvent("INFO", "ENV", "Unit " + std::to_string(unitId) + " stepped on a neutral object!"));
+        }
+        obj->interact(*unit);
+
+        objects_[y][x] = nullptr; 
+    }
 }
 
 void GameMediator::spawnObject(const std::string& type, int x, int y) {
@@ -112,6 +137,11 @@ void GameMediator::heal(int unitId, int targetId) {
 }
 
 void GameMediator::buildBuilding(const std::string& type, int x, int y) {
+    if (!gameField_ || !gameField_->inBounds(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: out of bounds"));
+        return;
+    }
+
     auto b = buildingManager_->buildBuilding(type, x, y);
     if (b) {
         base_->addBuilding(b);
