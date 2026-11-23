@@ -7,18 +7,22 @@
 
 class Altar : public NeutralObject {
 public:
-	Altar() : NeutralObject(nullptr) {}
+	explicit Altar(std::shared_ptr<ILogger> logger) : NeutralObject(nullptr, logger) {}
 
 	void interact(Unit& unit) override {
 		if (unit.getInfo()->type == UnitType::Infantry || unit.getInfo()->type == UnitType::Archer) {
-			strategy_ = std::make_shared<AttackBoostStrategy>();
+			strategy_ = std::make_shared<AttackBoostStrategy>(logger_);
 		}
 		else if (unit.getInfo()->type == UnitType::Mage) {
-			strategy_ = std::make_shared<ManaBoostStrategy>();
+			strategy_ = std::make_shared<ManaBoostStrategy>(logger_);
 		}
 		else {
-			strategy_ = std::make_shared<AttackBoostStrategy>();
+			strategy_ = std::make_shared<AttackBoostStrategy>(logger_);
 		}
 		strategy_->apply(unit);
+
+		if (logger_) {
+			logger_->log(LogEvent("INFO", "ENV", "Altar activated by Unit ID=" + std::to_string(unit.getId())));
+		}
 	}
 };

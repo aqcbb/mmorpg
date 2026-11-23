@@ -4,5 +4,7 @@
 
 class Trap : public NeutralObject {
 public:
-	Trap() : NeutralObject(std::make_shared<DamageStrategy>()) {}
+	explicit Trap(std::shared_ptr<ILogger> logger)
+		: NeutralObject(std::make_shared<DamageStrategy>(logger), logger) {
+	}
 };

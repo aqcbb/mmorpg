@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IInteractionStrategy.h"
+#include "logging/ILogger.h"
 #include <memory>
 
 class Unit;
@@ -8,8 +9,10 @@ class Unit;
 class NeutralObject {
 protected:
 	std::shared_ptr<IInteractionStrategy> strategy_;
+	std::shared_ptr<ILogger> logger_;
 public:
-	explicit NeutralObject(std::shared_ptr<IInteractionStrategy> strategy) : strategy_(std::move(strategy)) {}
+	explicit NeutralObject(std::shared_ptr<IInteractionStrategy> strategy, std::shared_ptr<ILogger> logger) 
+		: strategy_(std::move(strategy)), logger_(logger) {}
 	virtual ~NeutralObject() = default;
 
 	virtual void interact(Unit& unit) {

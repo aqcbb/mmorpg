@@ -4,5 +4,5 @@
 
 class EnergySource : public NeutralObject {
 public:
-	EnergySource() : NeutralObject(std::make_shared<HealthRestoreStrategy>()) {}
+	explicit EnergySource(std::shared_ptr<ILogger> logger) : NeutralObject(std::make_shared<HealthRestoreStrategy>(logger), logger) {}
 };

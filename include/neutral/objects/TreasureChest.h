@@ -4,5 +4,5 @@
 
 class TreasureChest : public NeutralObject {
 public:
-	TreasureChest() : NeutralObject(std::make_shared<ResourceStrategy>()) {}
+	explicit TreasureChest(std::shared_ptr<ILogger> logger) : NeutralObject(std::make_shared<ResourceStrategy>(logger), logger) {}
 };
