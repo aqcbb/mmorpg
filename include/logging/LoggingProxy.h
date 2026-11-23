@@ -20,4 +20,7 @@ public:
 	void setLogger(std::unique_ptr<ILogger> logger);
 	void setLoggerFromString(const std::string& type, const std::string& filename = "");
 	void setFormatterFromString(const std::string& type);
+
+	bool isConsole() const { return isConsole_; }
+	const std::vector<std::string>& getRecentLogs() const { return recentLogs_; }
 };
