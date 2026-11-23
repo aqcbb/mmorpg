@@ -21,4 +21,6 @@ public:
 	int getWidth() const { return width_; }
 	int getHeight() const { return height_; }
 	bool inBounds(int x, int y) const;
+
+	void generateRandomTerrain();
 };

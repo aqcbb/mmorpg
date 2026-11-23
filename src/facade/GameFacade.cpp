@@ -93,28 +93,33 @@ void GameFacade::processInput(const std::string& input) {
 
     renderMap();
 
-    if (logger_ && logger_->isConsole()) {
-        std::cout << "\n(!) RECENT LOGS\n";
-        for (const auto& log : logger_->getRecentLogs()) {
-            std::cout << log << "\n";
-        }
+    if (input.find("stats") == 0) {
+        mediator_->getStats();
     }
+    else {
+        if (logger_ && logger_->isConsole()) {
+            std::cout << "\n(!) RECENT LOGS\n";
+            for (const auto& log : logger_->getRecentLogs()) {
+                std::cout << log << "\n";
+            }
+        }
 
-    std::cout << "\n[COMMANDS]\n";
-    std::cout << "  create unit <type> at <x>,<y>   (infantry, scout, tank, worker, medic, archer, mage)\n";
-    std::cout << "  move unit <id> to <x>,<y>\n";
-    std::cout << "  attack unit <id> target <id>\n";
-    std::cout << "  build <type> at <x>,<y>         (barracks, powerplant, laboratory, warehouse, hospital)\n";
-    std::cout << "  produce <type> in <buildingId>\n";
-    std::cout << "  collect unit <id> from <resourceId>\n";
-    std::cout << "  distribute <resource> to <target> <amount>\n";
-    std::cout << "  research <techId>\n";
-    std::cout << "  spawn object <type> at <x>,<y>  (chest, trap, altar, source)\n";
-    std::cout << "  stats\n";
-    std::cout << "  map\n";
-    std::cout << "  set_logger <console|file|null>\n";
-    std::cout << "  set_format <text|json|csv>\n";
-    std::cout << "  exit\n";
+        std::cout << "\n[COMMANDS]\n";
+        std::cout << "  create unit <type> at <x>,<y>   (infantry, scout, tank, worker, medic, archer, mage)\n";
+        std::cout << "  move unit <id> to <x>,<y>\n";
+        std::cout << "  attack unit <id> target <id>\n";
+        std::cout << "  build <type> at <x>,<y>         (barracks, powerplant, laboratory, warehouse, hospital)\n";
+        std::cout << "  produce <type> in <buildingId>\n";
+        std::cout << "  collect unit <id> from <resourceId>\n";
+        std::cout << "  distribute <resource> to <target> <amount>\n";
+        std::cout << "  research <techId>\n";
+        std::cout << "  spawn object <type> at <x>,<y>  (chest, trap, altar, source)\n";
+        std::cout << "  stats\n";
+        std::cout << "  map\n";
+        std::cout << "  set_logger <console|file|null>\n";
+        std::cout << "  set_format <text|json|csv>\n";
+        std::cout << "  exit\n";
+    }
 
     std::cout << "> ";
 }
