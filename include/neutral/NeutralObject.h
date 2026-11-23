@@ -3,6 +3,7 @@
 #include "IInteractionStrategy.h"
 #include "logging/ILogger.h"
 #include <memory>
+#include <ostream>
 
 class Unit;
 

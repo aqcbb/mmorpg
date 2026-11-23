@@ -32,6 +32,12 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
         return;
     }
 
+    auto terrain = terrainMap_->getTerrainAt(x, y);
+    if (!terrain->isPassable(type)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot create unit: terrain is not passable for this unit type"));
+        return;
+    }
+
     auto unit = base_->createUnit(type, x, y);
     if (unit) {
         unitManager_->addUnit(unit);
@@ -61,6 +67,11 @@ void GameMediator::moveUnit(int unitId, int x, int y) {
         return;
     }
 
+    auto terrain = terrainMap_->getTerrainAt(x, y);
+    if (!terrain->isPassable(unit->getInfo()->type)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Cannot move: terrain is not passable for " + unit->getType()));
+        return;
+    }
 
     unitManager_->moveUnit(unitId, x, y);
 
@@ -78,6 +89,13 @@ void GameMediator::spawnObject(const std::string& type, int x, int y) {
     if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: out of bounds"));
         return;
+    }
+
+    for (const auto& b : buildingManager_->getAllBuildings()) {
+        if (b->getX() == x && b->getY() == y) {
+            if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: building '" + b->getType() + "' is on this cell!"));
+            return;
+        }
     }
 
     std::shared_ptr<NeutralObject> obj;
@@ -150,6 +168,12 @@ void GameMediator::heal(int unitId, int targetId) {
 void GameMediator::buildBuilding(const std::string& type, int x, int y) {
     if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: out of bounds"));
+        return;
+    }
+
+    auto terrain = terrainMap_->getTerrainAt(x, y);
+    if (terrain->getSymbol() == 'M') {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: terrain is not suitable for building"));
         return;
     }
 

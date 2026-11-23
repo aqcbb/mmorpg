@@ -145,8 +145,6 @@
     <ClCompile Include="src\core\UnitTypeInfo.cpp" />
     <ClCompile Include="src\facade\GameFacade.cpp" />
     <ClCompile Include="src\factories\ConcreteUnitFactory.cpp" />
-    <ClCompile Include="src\field\GameField.cpp" />
-    <ClCompile Include="src\field\GameFieldIterator.cpp" />
     <ClCompile Include="src\handler\handlers\AttackHandler.cpp" />
     <ClCompile Include="src\handler\handlers\BuildHandler.cpp" />
     <ClCompile Include="src\handler\handlers\CollectHandler.cpp" />
@@ -215,8 +213,6 @@
     <ClInclude Include="include\factories\SpearmanFactory.h" />
     <ClInclude Include="include\factories\SwordsmanFactory.h" />
     <ClInclude Include="include\factories\UnitFactory.h" />
-    <ClInclude Include="include\field\GameField.h" />
-    <ClInclude Include="include\field\GameFieldIterator.h" />
     <ClInclude Include="include\handler\Handler.h" />
     <ClInclude Include="include\handler\handlers\AttackHandler.h" />
     <ClInclude Include="include\handler\handlers\BuildHandler.h" />
