@@ -38,6 +38,11 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
         return;
     }
 
+    if (auto obj = getObjectAt(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot create unit: a neutral object is already on this cell!"));
+        return;
+    }
+
     auto unit = base_->createUnit(type, x, y);
     if (unit) {
         unitManager_->addUnit(unit);
@@ -96,6 +101,11 @@ void GameMediator::spawnObject(const std::string& type, int x, int y) {
             if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: building '" + b->getType() + "' is on this cell!"));
             return;
         }
+    }
+
+    if (getObjectAt(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: cell is already occupied"));
+        return;
     }
 
     std::shared_ptr<NeutralObject> obj;
@@ -174,6 +184,11 @@ void GameMediator::buildBuilding(const std::string& type, int x, int y) {
     auto terrain = terrainMap_->getTerrainAt(x, y);
     if (terrain->getSymbol() == 'M') {
         if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: terrain is not suitable for building"));
+        return;
+    }
+
+    if (getObjectAt(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: object is on this cell!"));
         return;
     }
 
