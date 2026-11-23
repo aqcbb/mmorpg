@@ -18,3 +18,8 @@ public:
 		}
 	}
 };
+
+inline std::ostream& operator<<(std::ostream& os, const NeutralObject& obj) {
+	os << "NeutralObject";
+	return os;
+}

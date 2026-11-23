@@ -5,6 +5,7 @@
 #include "core/UnitType.h"
 #include <memory>
 #include <vector>
+#include <ostream>
 
 class Unit;
 class Building;
@@ -42,3 +43,10 @@ public:
 	size_t getUnitCount() const { return units_.size(); }
 	size_t getBuildingCount() const { return buildings_.size(); }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Base& base) {
+	os << "Base [HP=" << base.getHealth()
+		<< ", Units=" << base.getUnitCount()
+		<< ", Buildings=" << base.getBuildingCount() << "]";
+	return os;
+}

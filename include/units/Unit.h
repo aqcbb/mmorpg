@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <ostream>
 #include <memory>
 #include <vector>
 #include "attributes/Armor.h"
@@ -62,3 +63,11 @@ public:
     Resources getInventory() const;
     void clearInventory();
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Unit& unit) {
+    os << "Unit [ID=" << unit.getId()
+        << ", Type=" << unit.getType()
+        << ", HP=" << unit.getHealth()
+        << ", Pos=(" << unit.getPosition().x << "," << unit.getPosition().y << ")]";
+    return os;
+}
