@@ -161,6 +161,7 @@
     <ClCompile Include="src\logging\ConsoleLogger.cpp" />
     <ClCompile Include="src\logging\CsvFormatter.cpp" />
     <ClCompile Include="src\logging\FileLogger.cpp" />
+    <ClCompile Include="src\logging\FormatterFactory.cpp" />
     <ClCompile Include="src\logging\JsonFormatter.cpp" />
     <ClCompile Include="src\logging\LogEvent.cpp" />
     <ClCompile Include="src\logging\LoggingProxy.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="include\logging\ConsoleLogger.h" />
     <ClInclude Include="include\logging\CsvFormatter.h" />
     <ClInclude Include="include\logging\FileLogger.h" />
+    <ClInclude Include="include\logging\FormatterFactory.h" />
     <ClInclude Include="include\logging\ILogFormatter.h" />
     <ClInclude Include="include\logging\ILogger.h" />
     <ClInclude Include="include\logging\JsonFormatter.h" />
