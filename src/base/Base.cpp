@@ -2,6 +2,7 @@
 #include "units/Unit.h"
 #include "building/Building.h"
 #include "factories/ConcreteUnitFactory.h"
+#include "logging/LogEvent.h"
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>

@@ -5,6 +5,7 @@
 #include "building/types/Warehouse.h"
 #include "building/types/Hospital.h"
 #include "core/UnitType.h"
+#include "logging/LogEvent.h"
 #include <iostream>
 #include <algorithm>
 
@@ -26,12 +27,18 @@ std::shared_ptr<Building> BuildingManager::buildBuilding(const std::string& type
     }
 
     buildings_.push_back(b);
-    std::cout << "[BuildingManager] Started building " << type << " at (" << x << ", " << y << ")\n";
+
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "BASE", "Building '" + type + "' started at (" + std::to_string(x) + "," + std::to_string(y) + ")"));
+    }
+
     return b;
 }
 
 void BuildingManager::startResearch(const std::string& techId) {
-    std::cout << "[BuildingManager] Started research: " << techId << "\n";
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "BASE", "Research started: " + techId));
+    }
 }
 
 void BuildingManager::produceUnit(int buildingId, UnitType unitType) {
