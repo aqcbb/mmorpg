@@ -3,8 +3,8 @@
 #include <chrono>
 #include <iostream>
 
-Unit::Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info)
-    : health(hp), armor(arm), attack(dmg), mana(manaAmount), symbol(sym), id_(id), info_(info) {
+Unit::Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info, std::shared_ptr<ILogger> logger)
+    : health(hp), armor(arm), attack(dmg), mana(manaAmount), symbol(sym), id_(id), info_(info), logger_(logger) {
 }
 
 void Unit::move(Point newPos) {
@@ -28,6 +28,12 @@ void Unit::takeDamage(int dmg) {
     int finalDmg = dmg;
     armor.reduceDamage(finalDmg);
     health.decrease(finalDmg);
+
+    if (logger_) {
+        std::string msg = "Unit " + getType() + "(ID=" + std::to_string(id_) + ") took " + std::to_string(finalDmg) + " damage. HP: " + std::to_string(health.getValue());
+        logger_->log(LogEvent("INFO", "UNIT", msg));
+    }
+
     notify({ UnitEventType::Damaged, id_, finalDmg, std::chrono::system_clock::now() });
     checkDeath(finalDmg);
 }

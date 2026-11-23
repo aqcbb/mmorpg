@@ -5,9 +5,8 @@
 #include <string>
 
 int main() {
-    auto mediator = std::make_shared<GameMediator>();
     auto logger = std::make_shared<LoggingProxy>();
-
+    auto mediator = std::make_shared<GameMediator>(logger);
     auto facade = std::make_shared<GameFacade>(mediator, logger);
     facade->init();
 

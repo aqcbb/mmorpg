@@ -11,5 +11,8 @@ int CombatSystem::calculateDamage(Unit& attacker, Unit& target) {
 
 void CombatSystem::resolveCombat(Unit& attacker, Unit& target) {
     int dmg = calculateDamage(attacker, target);
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "COMBAT", "Unit " + std::to_string(attacker.getId()) + " deals " + std::to_string(dmg) + " damage"));
+    }
     target.takeDamage(dmg);
 }

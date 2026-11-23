@@ -3,7 +3,7 @@
 
 class Mage : public Unit {
 public:
-	explicit Mage(int id = 0) : Unit(60, 5, 30, 100, 'M', id, UnitTypeInfo::getInfo(UnitType::Mage)) {}
+	explicit Mage(int id, std::shared_ptr<ILogger> logger) : Unit(60, 5, 30, 100, 'M', id, UnitTypeInfo::getInfo(UnitType::Mage), logger) {}
 
 	std::string getType() const override { return "Mage"; }
 	std::unique_ptr<Unit> clone() const override {

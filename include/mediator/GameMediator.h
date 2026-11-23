@@ -3,6 +3,7 @@
 #include <string>
 #include "core/UnitType.h"
 #include "terrain/TerrainMap.h"
+#include "logging/ILogger.h"
 
 class Base;
 class UnitManager;
@@ -12,6 +13,8 @@ class CombatSystem;
 
 class GameMediator {
 private:
+    std::shared_ptr<ILogger> logger_;
+
     std::shared_ptr<Base> base_;
     std::shared_ptr<UnitManager> unitManager_;
     std::shared_ptr<BuildingManager> buildingManager_;
@@ -21,7 +24,7 @@ private:
     std::shared_ptr<TerrainMap> terrainMap_;
 
 public:
-    GameMediator();
+    GameMediator(std::shared_ptr<ILogger> logger);
 
     void createUnit(UnitType type, int x, int y);
     void moveUnit(int unitId, int x, int y);

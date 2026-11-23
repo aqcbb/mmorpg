@@ -3,6 +3,7 @@
 #include "observer/IObserver.h"
 #include "core/Resources.h"
 #include "core/UnitType.h"
+#include "logging/ILogger.h"
 #include <memory>
 #include <vector>
 #include <ostream>
@@ -20,8 +21,9 @@ private:
 	int nextBuildingId_;
 	std::vector<std::shared_ptr<Unit>> units_;
 	std::vector<std::shared_ptr<Building>> buildings_;
+	std::shared_ptr<ILogger> logger_;
 public:
-	Base(int health, int maxUnits, int defenseLevel);
+	Base(int health, int maxUnits, int defenseLevel, std::shared_ptr<ILogger> logger);
 	~Base() override = default;
 
 	void onUnitEvent(const UnitEvent& event) override;

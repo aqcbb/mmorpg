@@ -11,6 +11,7 @@
 #include "core/UnitTypeInfo.h"
 #include "core/Resources.h"
 #include "observer/IObservable.h"
+#include "logging/ILogger.h"
 
 class Unit : public IObservable {
 protected:
@@ -25,9 +26,10 @@ protected:
     std::string currentOrder_;
     std::shared_ptr<UnitTypeInfo> info_;
     std::vector<std::weak_ptr<IObserver>> observers_;
+    std::shared_ptr<ILogger> logger_;
 
 public:
-    Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info);
+    Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shared_ptr<UnitTypeInfo> info, std::shared_ptr<ILogger> logger);
     virtual ~Unit() = default;
 
     virtual std::string getType() const = 0;

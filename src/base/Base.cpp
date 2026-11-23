@@ -6,7 +6,9 @@
 #include <stdexcept>
 #include <iostream>
 
-Base::Base(int health, int maxUnits, int defenseLevel) : health_(health), maxUnits_(maxUnits), defenseLevel_(defenseLevel), resources_(0, 0, 0), nextUnitId_(1) {}
+Base::Base(int health, int maxUnits, int defenseLevel, std::shared_ptr<ILogger> logger) 
+	: health_(health), maxUnits_(maxUnits), defenseLevel_(defenseLevel), resources_(0, 0, 0), nextUnitId_(1), nextBuildingId_(1), logger_(logger)
+{}
 
 void Base::onUnitEvent(const UnitEvent& event) {
 	switch (event.type) {
@@ -31,9 +33,13 @@ std::shared_ptr<Unit> Base::createUnit(UnitType type, int x, int y) {
 		return nullptr;
 	}
 
-	ConcreteUnitFactory factory(type);
+	ConcreteUnitFactory factory(type, logger_);
 	auto unit = factory.createUnit(nextUnitId_++);
 	
+	if (logger_) {
+		logger_->log(LogEvent("INFO", "BASE", "Created unit ID=" + std::to_string(unit->getId())));
+	}
+
 	std::shared_ptr<Unit> sharedUnit = std::move(unit);
 
 	sharedUnit->move(Point{ x, y });

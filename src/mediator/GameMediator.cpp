@@ -7,12 +7,12 @@
 #include "units/Unit.h"
 #include <iostream>
 
-GameMediator::GameMediator() {
-    base_ = std::make_shared<Base>(1000, 50, 5);
+GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
+    base_ = std::make_shared<Base>(1000, 50, 5, logger_);
     unitManager_ = std::make_shared<UnitManager>();
     buildingManager_ = std::make_shared<BuildingManager>();
     resourceSystem_ = std::make_shared<ResourceSystem>();
-    combatSystem_ = std::make_shared<CombatSystem>();
+    combatSystem_ = std::make_shared<CombatSystem>(logger_);
     terrainMap_ = std::make_shared<TerrainMap>(40, 20);
 }
 
