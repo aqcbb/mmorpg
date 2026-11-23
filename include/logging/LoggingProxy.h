@@ -1,11 +1,15 @@
 #pragma once
 #include "logging/ILogger.h"
+#include <vector>
+#include <string>
 #include <memory>
 
 class LoggingProxy : public ILogger {
 private:
 	std::shared_ptr<ILogger> currentLogger_;
 	std::shared_ptr<ILogFormatter> formatter_;
+	std::vector<std::string> recentLogs_;
+	bool isConsole_ = true;
 
 public:
 	LoggingProxy();
