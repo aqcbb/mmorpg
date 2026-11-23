@@ -9,6 +9,9 @@ Unit::Unit(int hp, int arm, int dmg, int manaAmount, char sym, int id, std::shar
 
 void Unit::move(Point newPos) {
     position = newPos;
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "UNIT", "Unit " + getType() + " (ID=" + std::to_string(id_) + ") moved to (" + std::to_string(newPos.x) + "," + std::to_string(newPos.y) + ")"));
+    }
 }
 
 void Unit::checkDeath(int dmg) {
@@ -75,7 +78,12 @@ int Unit::getArmorValue() const { return armor.getValue(); }
 int Unit::getDamageValue() const { return attack.getDamage(); }
 int Unit::getMana() const { return mana.getValue(); }
 
-void Unit::heal(int amount) { health.increase(amount); }
+void Unit::heal(int amount) { 
+    health.increase(amount); 
+    if (logger_) {
+        logger_->log(LogEvent("INFO", "UNIT", "Unit " + getType() + " (ID=" + std::to_string(id_) + ") healed for " + std::to_string(amount)));
+    }
+}
 void Unit::boostAttack(int amount) { attack.increase(amount); }
 void Unit::boostMana(int amount) { mana.increase(amount); }
 
