@@ -14,7 +14,7 @@ GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
     buildingManager_ = std::make_shared<BuildingManager>(logger_);
     resourceSystem_ = std::make_shared<ResourceSystem>();
     combatSystem_ = std::make_shared<CombatSystem>(logger_);
-    terrainMap_ = std::make_shared<TerrainMap>(40, 20);
+    terrainMap_ = std::make_shared<TerrainMap>(40, 20, logger_);
 }
 
 void GameMediator::createUnit(UnitType type, int x, int y) {
