@@ -5,6 +5,7 @@
 #include "combat/CombatSystem.h"
 #include "resource/ResourceSystem.h"
 #include "units/Unit.h"
+#include "logging/LogEvent.h"
 #include <iostream>
 
 GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
@@ -23,7 +24,7 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
         notifyUnitCreated(unit->getId());
     }
     else {
-        std::cout << "[Mediator] Failed to create unit (limit reached or error).\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Failed to create unit (limit reached)"));
     }
 }
 
@@ -45,7 +46,7 @@ void GameMediator::attack(int attackerId, int targetId) {
         }
     }
     else {
-        std::cout << "[Mediator] Attacker or target not found.\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "COMBAT", "Attacker or target not found"));
     }
 }
 
@@ -55,12 +56,10 @@ void GameMediator::collectResource(int unitId, int resourcePointId) {
         Resources loot(50, 20, 10);
         unit->addResources(loot);
         base_->addResources(loot);
-
-        std::cout << "[Mediator] Unit " << unitId << " collected resources.\n";
         notifyResourceCollected(unitId, 50);
     }
     else {
-        std::cout << "[Mediator] Unit not found.\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Unit not found for collecting"));
     }
 }
 
@@ -69,10 +68,9 @@ void GameMediator::heal(int unitId, int targetId) {
     auto target = unitManager_->getUnitById(targetId);
     if (unit && target) {
         target->heal(30);
-        std::cout << "[Mediator] Unit " << unitId << " healed Unit " << targetId << " for 30 HP.\n";
     }
     else {
-        std::cout << "[Mediator] Unit not found.\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Healer or target not found"));
     }
 }
 
@@ -95,32 +93,32 @@ void GameMediator::distributeResources(const std::string& from, const std::strin
 
     if (from == "wood") {
         if (current.getWood() < amount) {
-            std::cout << "[Mediator] Not enough wood! You have " << current.getWood() << ".\n";
+            if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Not enough wood"));
             return;
         }
         cost = Resources(amount, 0, 0);
     }
     else if (from == "metal") {
         if (current.getMetal() < amount) {
-            std::cout << "[Mediator] Not enough metal!\n";
+            if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Not enough metal"));
             return;
         }
         cost = Resources(0, amount, 0);
     }
     else if (from == "energy") {
         if (current.getEnergy() < amount) {
-            std::cout << "[Mediator] Not enough energy!\n";
+            if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Not enough energy"));
             return;
         }
         cost = Resources(0, 0, amount);
     }
     else {
-        std::cout << "[Mediator] Unknown resource type: " << from << "\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Unknown resource type"));
         return;
     }
 
     if (base_->spendResources(cost)) {
-        std::cout << "[Mediator] Successfully distributed " << amount << " " << from << " to " << to << ".\n";
+        if (logger_) logger_->log(LogEvent("INFO", "BASE", "Distributed " + std::to_string(amount) + " " + from + " to " + to));
         notifyResourceCollected(0, amount);
     }
 }
@@ -139,16 +137,15 @@ void GameMediator::getStats() const {
 }
 
 void GameMediator::notifyUnitCreated(int unitId) {
-    std::cout << "[Mediator] Unit " << unitId << " created and registered.\n";
+    if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(unitId) + " created and registered"));
 }
 
 void GameMediator::notifyResourceCollected(int unitId, int amount) {
-    std::cout << "[Mediator] Unit " << unitId << " collected " << amount << " resources.\n";
+    if (logger_) logger_->log(LogEvent("INFO", "UNIT", "Unit " + std::to_string(unitId) + " collected " + std::to_string(amount) + " resources"));
 }
 
 void GameMediator::notifyCombatResolved(int attackerId, int targetId, int damage) {
-    std::cout << "[Mediator] Unit " << attackerId << " attacked Unit "
-        << targetId << " for " << damage << " damage.\n";
+    if (logger_) logger_->log(LogEvent("INFO", "COMBAT", "Unit " + std::to_string(attackerId) + " attacked Unit " + std::to_string(targetId) + " for " + std::to_string(damage) + " damage"));
 }
 
 void GameMediator::notifyBuildingCompleted(int buildingId) {

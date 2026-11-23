@@ -21,12 +21,11 @@ std::shared_ptr<Unit> UnitManager::getUnitById(int id) const {
 bool UnitManager::moveUnit(int unitId, int x, int y) {
     auto unit = getUnitById(unitId);
     if (!unit) {
-        std::cout << "[UnitManager] Unit with ID " << unitId << " not found.\n";
+        if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Unit with ID " + std::to_string(unitId) + " not found"));
         return false;
     }
 
     unit->move(Point{ x, y });
-    std::cout << "[UnitManager] Unit " << unitId << " moved to (" << x << ", " << y << ").\n";
     return true;
 }
 
