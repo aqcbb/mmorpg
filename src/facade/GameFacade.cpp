@@ -176,21 +176,19 @@ void GameFacade::renderMap() const {
     auto unitMgr = mediator_->getUnitManager();
     auto bldMgr = mediator_->getBuildingManager();
     auto terrainMgr = mediator_->getTerrainMap();
-
-    auto gameField = mediator_->getGameField();
-    int width = gameField->getWidth();
-    int height = gameField->getHeight();
+    int width = terrainMgr->getWidth();
+    int height = terrainMgr->getHeight();
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
 
             if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
-                std::cout << Color::GRAY << 'X' << Color::RESET;
+                std::cout << Color::WHITE << 'X' << Color::RESET;
                 continue;
             }
 
             if (x == 1 && y == 1) {
-                std::cout << Color::WHITE << 'B' << Color::RESET;
+                std::cout << Color::LIGHT_YELLOW << 'B' << Color::RESET;
                 continue;
             }
 
@@ -232,10 +230,10 @@ void GameFacade::renderMap() const {
 
             auto terr = terrainMgr->getTerrainAt(x, y);
             char sym = terr->getSymbol();
-            if (sym == '.') std::cout << Color::GREEN << '.' << Color::RESET;
-            else if (sym == '^') std::cout << Color::LIGHT_GREEN << '^' << Color::RESET;
+            if (sym == '.') std::cout << Color::LIGHT_GREEN << '.' << Color::RESET;
+            else if (sym == '^') std::cout << Color::GREEN << '^' << Color::RESET;
             else if (sym == '~') std::cout << Color::BLUE << '~' << Color::RESET;
-            else if (sym == 'M') std::cout << Color::WHITE << 'M' << Color::RESET;
+            else if (sym == 'M') std::cout << Color::GRAY << 'M' << Color::RESET;
             else std::cout << sym;
         }
         std::cout << '\n';

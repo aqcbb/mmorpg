@@ -24,12 +24,10 @@ GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
 
     terrainMap_ = std::make_shared<TerrainMap>(40, 20, logger_);
     terrainMap_->generateRandomTerrain();
-
-    gameField_ = std::make_shared<GameField>(40, 20, 100);
 }
 
 void GameMediator::createUnit(UnitType type, int x, int y) {
-    if (!gameField_ || !gameField_->inBounds(x, y)) {
+    if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot create unit: out of bounds"));
         return;
     }
@@ -45,7 +43,7 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
 }
 
 void GameMediator::moveUnit(int unitId, int x, int y) {
-    if (!gameField_ || !gameField_->inBounds(x, y)) {
+    if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Cannot move unit: out of bounds"));
         return;
     }
@@ -77,7 +75,7 @@ void GameMediator::moveUnit(int unitId, int x, int y) {
 }
 
 void GameMediator::spawnObject(const std::string& type, int x, int y) {
-    if (!gameField_ || !gameField_->inBounds(x, y)) {
+    if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: out of bounds"));
         return;
     }
@@ -100,7 +98,7 @@ void GameMediator::spawnObject(const std::string& type, int x, int y) {
 }
 
 std::shared_ptr<NeutralObject> GameMediator::getObjectAt(int x, int y) const {
-    if (!gameField_ || !gameField_->inBounds(x, y)) return nullptr;
+    if (!terrainMap_ || !terrainMap_->inBounds(x, y)) return nullptr;
 
     if (y >= objects_.size() || x >= objects_[y].size()) return nullptr;
 
@@ -150,7 +148,7 @@ void GameMediator::heal(int unitId, int targetId) {
 }
 
 void GameMediator::buildBuilding(const std::string& type, int x, int y) {
-    if (!gameField_ || !gameField_->inBounds(x, y)) {
+    if (!terrainMap_ || !terrainMap_->inBounds(x, y)) {
         if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot build: out of bounds"));
         return;
     }
