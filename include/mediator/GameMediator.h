@@ -4,6 +4,8 @@
 #include "core/UnitType.h"
 #include "terrain/TerrainMap.h"
 #include "logging/ILogger.h"
+#include "field/GameField.h"
+#include "neutral/NeutralObject.h"
 
 class Base;
 class UnitManager;
@@ -21,6 +23,9 @@ private:
     std::shared_ptr<ResourceSystem> resourceSystem_;
     std::shared_ptr<CombatSystem> combatSystem_;
 
+    std::vector<std::vector<std::shared_ptr<NeutralObject>>> objects_;
+
+    std::shared_ptr<GameField> gameField_;
     std::shared_ptr<TerrainMap> terrainMap_;
 
 public:
@@ -36,6 +41,7 @@ public:
     void distributeResources(const std::string& from, const std::string& to, int amount);
     void produceUnit(int buildingId, UnitType type);
     void getStats() const;
+    void spawnObject(const std::string& type, int x, int y);
 
     void notifyUnitCreated(int unitId);
     void notifyResourceCollected(int unitId, int amount);
@@ -46,5 +52,8 @@ public:
     std::shared_ptr<UnitManager> getUnitManager() const { return unitManager_; }
     std::shared_ptr<BuildingManager> getBuildingManager() const { return buildingManager_; }
 
+    std::shared_ptr<NeutralObject> getObjectAt(int x, int y) const;
+
+    std::shared_ptr<GameField> getGameField() const { return gameField_; }
     std::shared_ptr<TerrainMap> getTerrainMap() const { return terrainMap_; }
 };

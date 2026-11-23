@@ -5,4 +5,6 @@
 class EnergySource : public NeutralObject {
 public:
 	explicit EnergySource(std::shared_ptr<ILogger> logger) : NeutralObject(std::make_shared<HealthRestoreStrategy>(logger), logger) {}
+
+	char getSymbol() const override { return 'E'; }
 };

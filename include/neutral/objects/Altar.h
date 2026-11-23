@@ -9,6 +9,8 @@ class Altar : public NeutralObject {
 public:
 	explicit Altar(std::shared_ptr<ILogger> logger) : NeutralObject(nullptr, logger) {}
 
+	char getSymbol() const override { return 'A'; }
+
 	void interact(Unit& unit) override {
 		if (unit.getInfo()->type == UnitType::Infantry || unit.getInfo()->type == UnitType::Archer) {
 			strategy_ = std::make_shared<AttackBoostStrategy>(logger_);

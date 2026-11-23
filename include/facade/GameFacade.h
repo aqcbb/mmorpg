@@ -31,6 +31,7 @@ public:
     void distributeResources(const std::string& from, const std::string& to, int amount);
     void produceUnit(int buildingId, UnitType type);
     void getStats() const;
+    void spawnObject(const std::string& type, int x, int y);
 
     void executeCommand(std::shared_ptr<Command> cmd);
     void undoLastCommand() {

@@ -140,6 +140,7 @@
     <ClCompile Include="src\command\commands\MoveUnitCommand.cpp" />
     <ClCompile Include="src\command\commands\ProduceUnitCommand.cpp" />
     <ClCompile Include="src\command\commands\ResearchCommand.cpp" />
+    <ClCompile Include="src\command\commands\SpawnObjectCommand.cpp" />
     <ClCompile Include="src\command\commands\StatsCommand.cpp" />
     <ClCompile Include="src\core\UnitTypeInfo.cpp" />
     <ClCompile Include="src\facade\GameFacade.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\handler\handlers\MoveHandler.cpp" />
     <ClCompile Include="src\handler\handlers\ProduceHandler.cpp" />
     <ClCompile Include="src\handler\handlers\ResearchHandler.cpp" />
+    <ClCompile Include="src\handler\handlers\SpawnObjectHandler.cpp" />
     <ClCompile Include="src\handler\handlers\StatsHandler.cpp" />
     <ClCompile Include="src\logging\ConsoleLogger.cpp" />
     <ClCompile Include="src\logging\CsvFormatter.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="include\command\commands\MoveUnitCommand.h" />
     <ClInclude Include="include\command\commands\ProduceUnitCommand.h" />
     <ClInclude Include="include\command\commands\ResearchCommand.h" />
+    <ClInclude Include="include\command\commands\SpawnObjectCommand.h" />
     <ClInclude Include="include\command\commands\StatsCommand.h" />
     <ClInclude Include="include\core\Colors.h" />
     <ClInclude Include="include\core\Position.h" />
@@ -226,6 +229,7 @@
     <ClInclude Include="include\handler\handlers\MoveHandler.h" />
     <ClInclude Include="include\handler\handlers\ProduceHandler.h" />
     <ClInclude Include="include\handler\handlers\ResearchHandler.h" />
+    <ClInclude Include="include\handler\handlers\SpawnObjectHandler.h" />
     <ClInclude Include="include\handler\handlers\StatsHandler.h" />
     <ClInclude Include="include\logging\ConsoleLogger.h" />
     <ClInclude Include="include\logging\CsvFormatter.h" />

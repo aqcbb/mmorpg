@@ -6,6 +6,11 @@
 #include "resource/ResourceSystem.h"
 #include "units/Unit.h"
 #include "logging/LogEvent.h"
+#include "neutral/objects/TreasureChest.h"
+#include "neutral/objects/Trap.h"
+#include "neutral/objects/Altar.h"
+#include "neutral/objects/EnergySource.h"
+#include "logging/LogEvent.h"
 #include <iostream>
 
 GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
@@ -15,6 +20,7 @@ GameMediator::GameMediator(std::shared_ptr<ILogger> logger) : logger_(logger) {
     resourceSystem_ = std::make_shared<ResourceSystem>();
     combatSystem_ = std::make_shared<CombatSystem>(logger_);
     terrainMap_ = std::make_shared<TerrainMap>(40, 20, logger_);
+    gameField_ = std::make_shared<GameField>(40, 20, 100);
 }
 
 void GameMediator::createUnit(UnitType type, int x, int y) {
@@ -30,6 +36,37 @@ void GameMediator::createUnit(UnitType type, int x, int y) {
 
 void GameMediator::moveUnit(int unitId, int x, int y) {
     unitManager_->moveUnit(unitId, x, y);
+}
+
+void GameMediator::spawnObject(const std::string& type, int x, int y) {
+    if (!gameField_ || !gameField_->inBounds(x, y)) {
+        if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Cannot spawn object: out of bounds"));
+        return;
+    }
+
+    std::shared_ptr<NeutralObject> obj;
+    if (type == "chest") obj = std::make_shared<TreasureChest>(logger_);
+    else if (type == "trap") obj = std::make_shared<Trap>(logger_);
+    else if (type == "altar") obj = std::make_shared<Altar>(logger_);
+    else if (type == "source") obj = std::make_shared<EnergySource>(logger_);
+    else {
+        if (logger_) logger_->log(LogEvent("ERROR", "ENV", "Unknown object type: " + type));
+        return;
+    }
+
+    if (objects_.size() <= y) objects_.resize(y + 1);
+    if (objects_[y].size() <= x) objects_[y].resize(x + 1);
+
+    objects_[y][x] = obj;
+    if (logger_) logger_->log(LogEvent("INFO", "ENV", "Spawned " + type + " at (" + std::to_string(x) + "," + std::to_string(y) + ")"));
+}
+
+std::shared_ptr<NeutralObject> GameMediator::getObjectAt(int x, int y) const {
+    if (!gameField_ || !gameField_->inBounds(x, y)) return nullptr;
+
+    if (y >= objects_.size() || x >= objects_[y].size()) return nullptr;
+
+    return objects_[y][x];
 }
 
 void GameMediator::attack(int attackerId, int targetId) {

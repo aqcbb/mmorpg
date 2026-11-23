@@ -15,10 +15,10 @@ private:
 
 	std::vector<std::vector<std::shared_ptr<Unit>>> grid;
 
+public:
 	bool inBounds(int x, int y) const;
 	bool isBorder(int x, int y) const;
 
-public:
 	GameField(int width, int height, int maxUnits);
 	~GameField() {}
 

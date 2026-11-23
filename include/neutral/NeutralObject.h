@@ -15,6 +15,8 @@ public:
 		: strategy_(std::move(strategy)), logger_(logger) {}
 	virtual ~NeutralObject() = default;
 
+	virtual char getSymbol() const = 0;
+
 	virtual void interact(Unit& unit) {
 		if (strategy_) {
 			strategy_->apply(unit);

@@ -20,6 +20,7 @@
 #include "command/commands/DistributeResourcesCommand.h"
 #include "command/commands/ProduceUnitCommand.h"
 #include "command/commands/StatsCommand.h"
+#include "command/commands/SpawnObjectCommand.h"
 
 #include "handler/handlers/CreateHandler.h"
 #include "handler/handlers/MoveHandler.h"
@@ -33,6 +34,7 @@
 #include "handler/handlers/MapHandler.h"
 #include "handler/handlers/DistributeHandler.h"
 #include "handler/handlers/LoggerHandler.h"
+#include "handler/handlers/SpawnObjectHandler.h"
 
 #include <iostream>
 
@@ -52,6 +54,7 @@ void GameFacade::init() {
     auto stats = std::make_shared<StatsHandler>(shared_from_this());
     auto mapHandler = std::make_shared<MapHandler>(shared_from_this());
     auto loggerHandler = std::make_shared<LoggerHandler>(shared_from_this());
+    auto spawnObjectHandler = std::make_shared<SpawnObjectHandler>(shared_from_this());
 
     create->setNext(move);
     move->setNext(attack);
@@ -59,7 +62,8 @@ void GameFacade::init() {
     collect->setNext(distribute);
     distribute->setNext(heal);
     heal->setNext(build);
-    build->setNext(research);
+    build->setNext(spawnObjectHandler);
+    spawnObjectHandler->setNext(research);
     research->setNext(produce);
     produce->setNext(stats);
     stats->setNext(mapHandler);
@@ -105,6 +109,7 @@ void GameFacade::processInput(const std::string& input) {
     std::cout << "  collect unit <id> from <resourceId>\n";
     std::cout << "  distribute <resource> to <target> <amount>\n";
     std::cout << "  research <techId>\n";
+    std::cout << "  spawn object <type> at <x>,<y>  (chest, trap, altar, source)\n";
     std::cout << "  stats\n";
     std::cout << "  map\n";
     std::cout << "  set_logger <console|file|null>\n";
@@ -156,6 +161,10 @@ void GameFacade::getStats() const {
     }
 }
 
+void GameFacade::spawnObject(const std::string& type, int x, int y) {
+    executeCommand(std::make_shared<SpawnObjectCommand>(mediator_, type, x, y));
+}
+
 void GameFacade::renderMap() const {
     if (!mediator_) return;
 
@@ -163,8 +172,9 @@ void GameFacade::renderMap() const {
     auto bldMgr = mediator_->getBuildingManager();
     auto terrainMgr = mediator_->getTerrainMap();
 
-    int width = terrainMgr->getWidth();
-    int height = terrainMgr->getHeight();
+    auto gameField = mediator_->getGameField();
+    int width = gameField->getWidth();
+    int height = gameField->getHeight();
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
@@ -190,6 +200,16 @@ void GameFacade::renderMap() const {
             }
             if (drawn) continue;
 
+            if (auto obj = mediator_->getObjectAt(x, y)) {
+                char sym = obj->getSymbol();
+                if (sym == 'C') std::cout << Color::LIGHT_YELLOW << sym << Color::RESET;
+                else if (sym == 'T') std::cout << Color::LIGHT_RED << sym << Color::RESET;
+                else if (sym == 'A') std::cout << Color::MAGENTA << sym << Color::RESET;
+                else if (sym == 'E') std::cout << Color::LIGHT_CYAN << sym << Color::RESET;
+                else std::cout << sym;
+                continue;
+            }
+
             for (const auto& u : unitMgr->getAllUnits()) {
                 if (u->getPosition().x == x && u->getPosition().y == y) {
                     std::string type = u->getType();
@@ -197,7 +217,7 @@ void GameFacade::renderMap() const {
                     else if (type == "Scout") std::cout << Color::CYAN << u->getSymbol() << Color::RESET;
                     else if (type == "Tank") std::cout << Color::BLUE << u->getSymbol() << Color::RESET;
                     else if (type == "Worker") std::cout << Color::YELLOW << u->getSymbol() << Color::RESET;
-                    else if (type == "Medic") std::cout << Color::LRED << u->getSymbol() << Color::RESET;
+                    else if (type == "Medic") std::cout << Color::LIGHT_RED << u->getSymbol() << Color::RESET;
                     else std::cout << u->getSymbol();
                     drawn = true;
                     break;
@@ -208,7 +228,7 @@ void GameFacade::renderMap() const {
             auto terr = terrainMgr->getTerrainAt(x, y);
             char sym = terr->getSymbol();
             if (sym == '.') std::cout << Color::GREEN << '.' << Color::RESET;
-            else if (sym == '^') std::cout << Color::LGREEN << '^' << Color::RESET;
+            else if (sym == '^') std::cout << Color::LIGHT_GREEN << '^' << Color::RESET;
             else if (sym == '~') std::cout << Color::BLUE << '~' << Color::RESET;
             else if (sym == 'M') std::cout << Color::WHITE << 'M' << Color::RESET;
             else std::cout << sym;
