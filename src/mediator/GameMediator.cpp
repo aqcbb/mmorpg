@@ -45,11 +45,19 @@ void GameMediator::moveUnit(int unitId, int x, int y) {
         return;
     }
 
+    for (const auto& b : buildingManager_->getAllBuildings()) {
+        if (b->getX() == x && b->getY() == y) {
+            if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Cannot move unit: building '" + b->getType() + "' is on this cell!"));
+            return;
+        }
+    }
+
     auto unit = unitManager_->getUnitById(unitId);
     if (!unit) {
         if (logger_) logger_->log(LogEvent("ERROR", "UNIT", "Unit not found"));
         return;
     }
+
 
     unitManager_->moveUnit(unitId, x, y);
 
