@@ -37,7 +37,7 @@ public:
 
     virtual void move(Point newPos);
     virtual void attackUnit(Unit& target);
-    virtual void takeDamage(int dmg);
+    int takeDamage(int dmg);
     void checkDeath(int dmg);
 
     void subscribe(std::shared_ptr<IObserver> observer) override;

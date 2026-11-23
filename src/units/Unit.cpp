@@ -27,7 +27,7 @@ void Unit::attackUnit(Unit& target) {
     target.checkDeath(dmg);
 }
 
-void Unit::takeDamage(int dmg) {
+int Unit::takeDamage(int dmg) {
     int finalDmg = dmg;
     armor.reduceDamage(finalDmg);
     health.decrease(finalDmg);
@@ -39,6 +39,8 @@ void Unit::takeDamage(int dmg) {
 
     notify({ UnitEventType::Damaged, id_, finalDmg, std::chrono::system_clock::now() });
     checkDeath(finalDmg);
+
+    return finalDmg;
 }
 
 void Unit::subscribe(std::shared_ptr<IObserver> observer) {

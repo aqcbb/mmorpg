@@ -10,9 +10,9 @@ public:
 	explicit DamageStrategy(std::shared_ptr<ILogger> logger) : logger_(logger) {}
 
 	void apply(Unit& unit) override {
-		unit.takeDamage(30);
+		int actualDmg = unit.takeDamage(30);
 		if (logger_) {
-			logger_->log(LogEvent("INFO", "ENV", "Unit " + std::to_string(unit.getId()) + " took 30 damage from trap"));
+			logger_->log(LogEvent("INFO", "ENV", "Trap hit Unit " + std::to_string(unit.getId()) + " for " + std::to_string(actualDmg) + " damage (after armor)."));
 		}
 	}
 };
