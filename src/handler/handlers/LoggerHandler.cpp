@@ -5,37 +5,39 @@
 #include <iostream>
 
 bool LoggerHandler::handle(const std::string& cmd) {
-	if (cmd.substr(0, 10) == "set_logger") {
-		std::istringstream iss(cmd);
-		std::string s, l, type, filename;
-		iss >> s >> l >> type >> filename;
+    std::istringstream iss(cmd);
+    std::string command;
+    iss >> command;
 
-		if (auto facade = facade_.lock()) {
-			auto logger = facade->getLogger();
-			if (type == "file") {
-				logger->setLoggerFromString("file", filename);
-			}
-			else {
-				logger->setLoggerFromString(type);
-			}
-			std::cout << "[Logger] Switched to " << type << "\n";
-		}
-		return true;
-	}
+    if (command == "set_logger") {
+        std::string type, filename;
+        iss >> type >> filename;
 
-	if (cmd.substr(0, 10) == "set_format") {
-		std::istringstream iss(cmd);
-		std::string s, f, type;
-		iss >> s >> f >> type;
+        if (auto facade = facade_.lock()) {
+            auto logger = facade->getLogger();
+            if (type == "file") {
+                logger->setLoggerFromString("file", filename);
+            }
+            else {
+                logger->setLoggerFromString(type);
+            }
+            logger->log(LogEvent("INFO", "SYSTEM", "Logger switched to " + type));
+        }
+        return true;
+    }
 
-		if (auto facade = facade_.lock()) {
-			auto logger = facade->getLogger();
-			logger->setFormatterFromString(type);
-			std::cout << "[Logger] Switched format to " << type << "\n";
-		}
-		return true;
-	}
+    if (command == "set_format") {
+        std::string type;
+        iss >> type;
 
-	return next_ ? next_->handle(cmd) : false;
+        if (auto facade = facade_.lock()) {
+            auto logger = facade->getLogger();
+            logger->setFormatterFromString(type);
+            logger->log(LogEvent("INFO", "SYSTEM", "Format switched to " + type));
+        }
+        return true;
+    }
+
+    return next_ ? next_->handle(cmd) : false;
 }
 

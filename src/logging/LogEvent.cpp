@@ -19,6 +19,6 @@ std::string	LogEvent::getCurrentTimestamp() {
 	localtime_r(&in_time_t, &bt);
 #endif
 	std::ostringstream oss;
-	oss << std::put_time(&bt, "%Y-%m-%dT%H:%M:%S");
+	oss << std::put_time(&bt, "%Y-%m-%d %H:%M:%S");
 	return oss.str();
 }
