@@ -141,7 +141,6 @@
     <ClCompile Include="src\command\commands\ProduceUnitCommand.cpp" />
     <ClCompile Include="src\command\commands\ResearchCommand.cpp" />
     <ClCompile Include="src\command\commands\StatsCommand.cpp" />
-    <ClCompile Include="src\controller\GameController.cpp" />
     <ClCompile Include="src\core\UnitTypeInfo.cpp" />
     <ClCompile Include="src\facade\GameFacade.cpp" />
     <ClCompile Include="src\factories\ConcreteUnitFactory.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="include\command\commands\ProduceUnitCommand.h" />
     <ClInclude Include="include\command\commands\ResearchCommand.h" />
     <ClInclude Include="include\command\commands\StatsCommand.h" />
-    <ClInclude Include="include\controller\GameController.h" />
     <ClInclude Include="include\core\Colors.h" />
     <ClInclude Include="include\core\Position.h" />
     <ClInclude Include="include\core\Resources.h" />

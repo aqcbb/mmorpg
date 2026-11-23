@@ -5,6 +5,8 @@
 #include "logging/TextFormatter.h"
 #include "logging/JsonFormatter.h"
 #include "logging/CsvFormatter.h"
+#include "logging/FormatterFactory.h"
+#include <iostream>
 
 LoggingProxy::LoggingProxy() {
 	currentLogger_ = std::make_unique<ConsoleLogger>();
@@ -33,7 +35,11 @@ void LoggingProxy::setLoggerFromString(const std::string& type, const std::strin
 }
 
 void LoggingProxy::setFormatterFromString(const std::string& type) {
-	if (type == "text") setFormatter(std::make_shared<TextFormatter>());
-	else if (type == "json") setFormatter(std::make_shared<JsonFormatter>());
-	else if (type == "csv") setFormatter(std::make_shared<CsvFormatter>());
+	try {
+		auto newFormatter = FormatterFactory::createFormatter(type);
+		setFormatter(newFormatter);
+	}
+	catch (const std::exception& e) {
+		std::cout << "[Logger] Error: " << e.what() << "\n";
+	}
 }
