@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 
 Base::Base(int health, int maxUnits, int defenseLevel, std::shared_ptr<ILogger> logger) 
 	: health_(health), maxUnits_(maxUnits), defenseLevel_(defenseLevel), resources_(0, 0, 0), nextUnitId_(1), nextBuildingId_(1), logger_(logger)
@@ -14,23 +15,24 @@ Base::Base(int health, int maxUnits, int defenseLevel, std::shared_ptr<ILogger> 
 void Base::onUnitEvent(const UnitEvent& event) {
 	switch (event.type) {
 	case UnitEventType::Created:
-		std::cout << "[Base] Unit " << event.unitId << " created\n";
+		if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(event.unitId) + " created"));
 		break;
 
 	case UnitEventType::Damaged:
-		std::cout << "[Base] Unit " << event.unitId << " took " << event.damage << " damage\n";
+		if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(event.unitId) + " took " + std::to_string(event.damage) + " damage"));
 		break;
 
 	case UnitEventType::Destroyed:
-		std::cout << "[Base] Unit " << event.unitId << " destroyed\n";
-		units_.erase(std::remove_if(units_.begin(), units_.end(), [&](const std::shared_ptr<Unit>& u) {return u->getId() == event.unitId; }), units_.end());
+		if (logger_) logger_->log(LogEvent("ALERT", "BASE", "Unit " + std::to_string(event.unitId) + " destroyed"));
+		units_.erase(std::remove_if(units_.begin(), units_.end(),
+			[&](const std::shared_ptr<Unit>& u) { return u->getId() == event.unitId; }), units_.end());
 		break;
 	}
 }
 
 std::shared_ptr<Unit> Base::createUnit(UnitType type, int x, int y) {
 	if (units_.size() >= static_cast<size_t>(maxUnits_)) {
-		std::cerr << "[Base] Cannot create unit: max limit reached\n";
+		if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Cannot create unit: max limit reached"));
 		return nullptr;
 	}
 
@@ -65,14 +67,19 @@ std::shared_ptr<Unit> Base::getUnitById(int id) const {
 
 void Base::addResources(const Resources& res) {
 	resources_ = resources_ + res;
-	std::cout << "[Base] Resources received! Current: ";
-	resources_.print();
-	std::cout << "\n";
+
+	if (logger_) {
+		std::ostringstream oss;
+		oss << "Resources received! Current: [Wood: " << resources_.getWood()
+			<< ", Metal: " << resources_.getMetal()
+			<< ", Energy: " << resources_.getEnergy() << "]";
+		logger_->log(LogEvent("INFO", "BASE", oss.str()));
+	}
 }
 
 bool Base::spendResources(const Resources& cost) {
 	if (!resources_.hasEnough(cost)) {
-		std::cout << "[Base] Not enough resources!\n";
+		if (logger_) logger_->log(LogEvent("ERROR", "BASE", "Not enough resources!"));
 		return false;
 	}
 	resources_ = resources_ - cost;
@@ -88,4 +95,4 @@ std::shared_ptr<Building> Base::getBuildingById(int id) const {
 		if (b->getId() == id) return b;
 	}
 	return nullptr;
-}
+}	
