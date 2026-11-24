@@ -15,7 +15,6 @@ Base::Base(int health, int maxUnits, int defenseLevel, std::shared_ptr<ILogger> 
 void Base::onUnitEvent(const UnitEvent& event) {
 	switch (event.type) {
 	case UnitEventType::Created:
-		if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(event.unitId) + " created"));
 		break;
 
 	case UnitEventType::Damaged:
@@ -38,10 +37,6 @@ std::shared_ptr<Unit> Base::createUnit(UnitType type, int x, int y) {
 
 	ConcreteUnitFactory factory(type, logger_);
 	auto unit = factory.createUnit(nextUnitId_++);
-	
-	if (logger_) {
-		logger_->log(LogEvent("INFO", "BASE", "Created unit ID=" + std::to_string(unit->getId())));
-	}
 
 	std::shared_ptr<Unit> sharedUnit = std::move(unit);
 

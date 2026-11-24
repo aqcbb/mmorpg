@@ -254,7 +254,15 @@ void GameMediator::getStats() const {
 }
 
 void GameMediator::notifyUnitCreated(int unitId) {
-    if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(unitId) + " created and registered"));
+    if (logger_) {
+        auto unit = unitManager_->getUnitById(unitId);
+        if (unit) {
+            logger_->log(LogEvent("INFO", "BASE", "Created unit " + unit->getType() + " (ID=" + std::to_string(unitId) + ") at (" + std::to_string(unit->getPosition().x) + "," + std::to_string(unit->getPosition().y) + ")"));
+        }
+        else {
+            logger_->log(LogEvent("INFO", "BASE", "Created unit ID=" + std::to_string(unitId)));
+        }
+    }
 }
 
 void GameMediator::notifyResourceCollected(int unitId, int amount) {
