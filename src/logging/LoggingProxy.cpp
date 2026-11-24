@@ -50,7 +50,10 @@ void LoggingProxy::setLogger(std::unique_ptr<ILogger> logger) {
 
 void LoggingProxy::setLoggerFromString(const std::string& type, const std::string& filename) {
 	if (type == "console") setLogger(std::make_unique<ConsoleLogger>());
-	else if (type == "file") setLogger(std::make_unique<FileLogger>(filename));
+	else if (type == "file") {
+		std::string actualFile = filename.empty() ? "log.txt" : filename;
+		setLogger(std::make_unique<FileLogger>(actualFile));
+	}
 	else if (type == "null") setLogger(std::make_unique<NullLogger>());
 	else std::cerr << "[LoggingProxy] Unknown logger type: " << type << "\n";
 }
