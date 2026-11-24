@@ -18,7 +18,6 @@ void Base::onUnitEvent(const UnitEvent& event) {
 		break;
 
 	case UnitEventType::Damaged:
-		if (logger_) logger_->log(LogEvent("INFO", "BASE", "Unit " + std::to_string(event.unitId) + " took " + std::to_string(event.damage) + " damage"));
 		break;
 
 	case UnitEventType::Destroyed:
