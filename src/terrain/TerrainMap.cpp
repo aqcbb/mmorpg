@@ -29,9 +29,9 @@ void TerrainMap::setTerrainAt(int x, int y, std::shared_ptr<Terrain> terrain) {
 	if (!inBounds(x, y)) throw std::out_of_range("TerrainMap: coordinates out of bounds");
 	grid_[y][x] = std::make_shared<TerrainProxy>(terrain);
 
-	if (logger_) {
-		logger_->log(LogEvent("INFO", "ENV", "Terrain changed at (" + std::to_string(x) + "," + std::to_string(y) + ") to " + terrain->getSymbol()));
-	}
+    if (logger_ && !isGenerating_) { 
+        logger_->log(LogEvent("INFO", "ENV", "Terrain changed..."));
+    }
 }
 
 bool TerrainMap::inBounds(int x, int y) const {
@@ -39,6 +39,7 @@ bool TerrainMap::inBounds(int x, int y) const {
 }
 
 void TerrainMap::generateRandomTerrain() {
+    isGenerating_ = true;
     static bool seeded = false;
     if (!seeded) {
         std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -50,15 +51,16 @@ void TerrainMap::generateRandomTerrain() {
             if (x == 1 && y == 1) continue;
 
             int chance = std::rand() % 100;
-            if (chance < 15) {
-                setTerrainAt(x, y, std::make_shared<Forest>());
-            }
-            else if (chance < 25) {
+            if (chance < 10) {
                 setTerrainAt(x, y, std::make_shared<Mountains>());
             }
-            else if (chance < 35) {
+            else if (chance < 25) {
                 setTerrainAt(x, y, std::make_shared<Swamp>());
+            }
+            else if (chance < 35) {
+                setTerrainAt(x, y, std::make_shared<Forest>());
             }
         }
     }
+    isGenerating_ = false;
 }

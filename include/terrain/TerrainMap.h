@@ -11,6 +11,7 @@ private:
 	int height_;
 	std::shared_ptr<ILogger> logger_;
 	std::vector<std::vector<std::shared_ptr<TerrainProxy>>> grid_;
+	bool isGenerating_ = false;
 public:
 	TerrainMap(int width, int height, std::shared_ptr<ILogger> logger);
 
